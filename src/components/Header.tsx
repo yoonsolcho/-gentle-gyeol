@@ -8,6 +8,7 @@ interface Props {
 
 export default function Header({ onChangeCollection }: Props) {
   const [isSunglassesHovered, setIsSunglassesHovered] = useState(false);
+  const [isGlassesHovered, setIsGlassesHovered] = useState(false);
   const [isMoreHovered, setIsMoreHovered] = useState(false);
 
   const handleSelectCollection = (name: string) => {
@@ -38,7 +39,7 @@ export default function Header({ onChangeCollection }: Props) {
                 className="absolute top-[72px] -left-6 bg-brand-bg border-x border-b border-black/5 shadow-xl rounded-b-xl px-8 py-6 flex flex-col gap-4 text-[15px] font-semibold text-brand-ink z-[1100]"
               >
                 <button 
-                  onClick={() => handleSelectCollection("전통공예")}
+                  onClick={() => handleSelectCollection("전체보기")}
                   className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
                 >
                   전체보기
@@ -72,7 +73,59 @@ export default function Header({ onChangeCollection }: Props) {
           </AnimatePresence>
         </div>
 
-        <a href="#" className="hover:opacity-60 transition-opacity">안경</a>
+        <div
+          className="relative h-full flex items-center"
+          onMouseEnter={() => setIsGlassesHovered(true)}
+          onMouseLeave={() => setIsGlassesHovered(false)}
+        >
+          <a href="#" className="hover:opacity-60 transition-opacity h-full flex items-center">
+            안경
+          </a>
+          
+          <AnimatePresence>
+            {isGlassesHovered && (
+              <motion.div
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 2 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
+                className="absolute top-[72px] -left-6 bg-brand-bg border-x border-b border-black/5 shadow-xl rounded-b-xl px-8 py-6 flex flex-col gap-4 text-[15px] font-semibold text-brand-ink z-[1100]"
+              >
+                <button 
+                  onClick={() => handleSelectCollection("전체보기")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                >
+                  전체보기
+                </button>
+                <button 
+                  onClick={() => handleSelectCollection("꽃 컬렉션")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                >
+                  꽃 컬렉션
+                </button>
+                <button 
+                  onClick={() => handleSelectCollection("궁궐 컬렉션")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                >
+                  궁궐 컬렉션
+                </button>
+                <button 
+                  onClick={() => handleSelectCollection("날개 컬렉션")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                >
+                  날개 컬렉션
+                </button>
+                <button 
+                  onClick={() => handleSelectCollection("문양 컬렉션")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                >
+                  문양 컬렉션
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
         <a href="#" className="hover:opacity-60 transition-opacity">컬렉션</a>
         <div
           className="relative h-full flex items-center"

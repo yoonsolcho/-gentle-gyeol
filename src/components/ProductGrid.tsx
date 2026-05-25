@@ -9,9 +9,12 @@ interface Props {
 
 export default function ProductGrid({ activeCollection }: Props) {
   // Filter products by the chosen collection
-  const filteredProducts = productsData.filter(
-    (p) => p.category === activeCollection
-  );
+  const filteredProducts = productsData.filter((p) => {
+    if (activeCollection === "전체보기") {
+      return p.category !== "전통공예";
+    }
+    return p.category === activeCollection;
+  });
 
   return (
     <section className="relative py-12 md:py-20 px-6 md:px-12 bg-brand-bg overflow-hidden">
@@ -26,11 +29,11 @@ export default function ProductGrid({ activeCollection }: Props) {
           transition={{ duration: 0.5 }}
         >
           <h2 className="font-serif text-2xl md:text-3xl mb-4 font-bold tracking-tight">
-            2026 {activeCollection}
+            2026 {activeCollection === "전체보기" ? "전체 컬렉션" : activeCollection}
           </h2>
-          <p className="text-sm md:text-base leading-relaxed text-brand-ink/70">
-            {activeCollection === "전통공예" && 
-              "한국 전통공예의 섬세한 숨결과 나전, 백자, 은사의 은은한 텍스처를 젠틀몬스터의 정교한 실루엣에 온전히 담았습니다."}
+          <p className="text-sm md:text-base leading-relaxed text-brand-ink/70 break-keep">
+            {activeCollection === "전체보기" && 
+              "젠틀몬스터의 실험적인 디자인 언어와 무형문화유산 장인들의 정교한 금속 기법(주조•단조•입사•칠보)이 융합된 전체 라인업을 소개합니다."}
             {activeCollection === "꽃 컬렉션" && 
               "매화, 벚꽃, 연꽃, 국화의 여리지만 기품 있는 매력을 정교한 수공예 메탈 꽃 문양 조각으로 완성한 한정 레벨 피스."}
             {activeCollection === "궁궐 컬렉션" && 
@@ -83,7 +86,7 @@ export default function ProductGrid({ activeCollection }: Props) {
               <div className="px-1 flex flex-col gap-1.5">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-[17px] font-bold tracking-tight text-brand-ink/90 group-hover:text-brand-ink transition-colors leading-snug">
+                    <h3 className="text-[17px] font-bold tracking-tight text-brand-ink/90 group-hover:text-brand-ink transition-colors leading-snug break-keep">
                       {p.name}
                     </h3>
                     <p className="text-[11px] font-mono tracking-widest text-[#888] uppercase mt-0.5">

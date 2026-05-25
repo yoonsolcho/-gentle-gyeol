@@ -6,7 +6,7 @@ interface Props {
 }
 
 const collections = [
-  "전통공예", "꽃 컬렉션", "궁궐 컬렉션", "날개 컬렉션", "문양 컬렉션"
+  "꽃 컬렉션", "궁궐 컬렉션", "날개 컬렉션", "문양 컬렉션"
 ];
 
 export default function CollectionChips({ activeCollection, onChangeCollection }: Props) {
