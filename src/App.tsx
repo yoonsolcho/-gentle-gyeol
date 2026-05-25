@@ -5,38 +5,60 @@ import Hero from './components/Hero';
 import Story from './components/Story';
 import ProductGrid from './components/ProductGrid';
 import Footer from './components/Footer';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
   const [activeCollection, setActiveCollection] = useState("꽃 컬렉션");
+  const [view, setView] = useState<'home' | 'story'>('home');
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleNavigate = (newView: 'home' | 'story') => {
+    setView(newView);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans">
-      <Header onChangeCollection={setActiveCollection} />
+    <div className="min-h-screen flex flex-col font-sans bg-brand-bg text-brand-ink">
+      <Header 
+        onChangeCollection={setActiveCollection} 
+        onChangeView={handleNavigate}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
       
       <main className="flex-1">
-        <CollectionChips 
-          activeCollection={activeCollection} 
-          onChangeCollection={setActiveCollection} 
-        />
-        
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <Hero />
-          
-          <div className="h-[72px] flex justify-between items-center px-6 md:px-12 bg-gradient-to-b from-[#c9c4c2] to-brand-bg font-bold">
-            <div className="flex gap-6">
-              <span className="opacity-85">{activeCollection} 컬렉션</span>
-            </div>
-            <div className="uppercase tracking-widest text-xs opacity-60 font-mono">2026 GENTLE 結</div>
-          </div>
+        <AnimatePresence mode="wait">
+          {view === 'home' ? (
+            <motion.div
+              key="home-page"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <CollectionChips 
+                activeCollection={activeCollection} 
+                onChangeCollection={setActiveCollection} 
+                onSearchClear={() => setSearchQuery("")}
+                isSearching={!!searchQuery}
+              />
+              
+              <Hero onOpenStory={() => handleNavigate('story')} />
 
-          <Story />
-          <ProductGrid activeCollection={activeCollection} />
-        </motion.div>
+              <ProductGrid activeCollection={activeCollection} searchQuery={searchQuery} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="story-page"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <Story onBack={() => handleNavigate('home')} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       <Footer />
