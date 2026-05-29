@@ -72,68 +72,132 @@ export default function ProductGrid({ activeCollection, searchQuery = "" }: Prop
           </p>
         </div>
       ) : (
-        <motion.div 
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredProducts.map((p) => (
-              <motion.article
-                key={p.id}
-                layout
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
-                className="flex flex-col group cursor-pointer"
-              >
-                {/* Image / SVG Container on a beautiful premium gray background */}
-                <div className="h-[280px] w-full bg-[#f0f1f2] rounded-2xl flex items-center justify-center mb-6 relative overflow-hidden transition-all duration-300 hover:bg-[#ebeced]">
-                  {/* Clean soft shadow beneath glasses inside display box */}
-                  <div className="absolute w-[60%] h-4 bottom-10 bg-black/[0.04] blur-lg rounded-full" />
-                  
-                  {/* Render the realistic vector representation */}
-                  <GlassesRenderer id={p.id} />
-                  
-                  {/* Status Tags */}
-                  {p.soldOut && (
-                    <span className="absolute top-4 left-4 bg-black text-white text-[10px] font-bold px-2.5 py-1 tracking-wider uppercase rounded-full">
-                      품절
-                    </span>
-                  )}
-                  {p.statusText && !p.soldOut && (
-                    <span className="absolute top-4 left-4 bg-[#7e8287] text-white text-[10px] font-bold px-2.5 py-1 tracking-wider uppercase rounded-full">
-                      {p.statusText}
-                    </span>
-                  )}
-                </div>
+        <div className="flex flex-col gap-16">
+          {/* 1. FRONT ANGLE: CORE SILHOUETTE */}
+          <div>
+            <div className="flex items-center gap-4 mb-8">
+              <span className="h-[1px] flex-1 bg-black/5" />
+              <span className="text-[9px] font-mono tracking-[0.25em] text-[#999] uppercase select-none">CORE SILHOUETTE</span>
+              <span className="h-[1px] flex-1 bg-black/5" />
+            </div>
 
-                {/* Product Info */}
-                <div className="px-1 flex flex-col gap-1.5">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-[17px] font-bold tracking-tight text-brand-ink/90 group-hover:text-brand-ink transition-colors leading-snug break-keep">
-                        {p.name}
-                      </h3>
-                      <p className="text-[11px] font-mono tracking-widest text-[#888] uppercase mt-0.5">
-                        {p.engName}
-                      </p>
+            <motion.div 
+              layout
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10"
+            >
+              <AnimatePresence mode="popLayout">
+                {filteredProducts.map((p) => (
+                  <motion.article
+                    key={`front-${p.id}`}
+                    layout
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.45, ease: "easeOut" }}
+                    className="flex flex-col group cursor-pointer"
+                  >
+                    {/* Image / SVG Container on a beautiful premium gray background */}
+                    <div className="h-[240px] w-full bg-[#f6f7f8] rounded-2xl flex items-center justify-center mb-5 relative overflow-hidden transition-all duration-300 hover:bg-[#ecedee]">
+                      {/* Clean soft shadow beneath glasses inside display box */}
+                      <div className="absolute w-[60%] h-4 bottom-8 bg-black/[0.03] blur-lg rounded-full" />
+                      
+                      {/* Render the realistic vector representation */}
+                      <GlassesRenderer id={p.id} viewType="front" />
+                      
+                      {/* Status Tags */}
+                      {p.soldOut && (
+                        <span className="absolute top-4 left-4 bg-black text-[#fafafa] text-[8px] font-bold px-2 py-0.5 tracking-wider uppercase rounded-sm">
+                          SOLD OUT
+                        </span>
+                      )}
+                      {p.statusText && !p.soldOut && (
+                        <span className="absolute top-4 left-4 bg-brand-dust text-[#fafafa] text-[8px] font-bold px-2 py-0.5 tracking-wider uppercase rounded-sm">
+                          {p.statusText}
+                        </span>
+                      )}
                     </div>
-                    <button className="p-1 hover:bg-black/5 rounded-full transition-colors group/heart">
-                      <Heart size={18} className="opacity-30 group-hover/heart:opacity-100 transition-opacity" />
-                    </button>
-                  </div>
-                  
-                  <div className="mt-1 flex items-center justify-between">
-                    <span className={`text-[15px] font-semibold ${p.soldOut ? 'text-black/40 line-through' : 'text-brand-ink/80'}`}>
-                      {p.price}
-                    </span>
-                  </div>
-                </div>
-              </motion.article>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+
+                    {/* Product Info */}
+                    <div className="px-1 flex flex-col gap-1.5">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="text-[14px] font-bold tracking-tight text-brand-ink/90 group-hover:text-brand-ink transition-colors leading-snug break-keep">
+                            {p.name}
+                          </h3>
+                          <p className="text-[9px] font-mono tracking-widest text-[#999] uppercase mt-0.5">
+                            {p.engName}
+                          </p>
+                        </div>
+                        <button className="p-1 hover:bg-black/5 rounded-full transition-colors group/heart">
+                          <Heart size={15} className="opacity-30 group-hover/heart:opacity-100 transition-opacity" />
+                        </button>
+                      </div>
+                    </div>
+                  </motion.article>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+
+          {/* 2. SIDE ANGLE: CRAFTED TEMPLE DETAIL */}
+          <div>
+            <div className="flex items-center gap-4 mb-8">
+              <span className="h-[1px] flex-1 bg-black/5" />
+              <span className="text-[9px] font-mono tracking-[0.25em] text-[#999] uppercase select-none">CRAFTED TEMPLE DETAIL</span>
+              <span className="h-[1px] flex-1 bg-black/5" />
+            </div>
+
+            <motion.div 
+              layout
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10"
+            >
+              <AnimatePresence mode="popLayout">
+                {filteredProducts.map((p) => (
+                  <motion.article
+                    key={`side-${p.id}`}
+                    layout
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.45, ease: "easeOut" }}
+                    className="flex flex-col group cursor-pointer"
+                  >
+                    {/* Side Detail Container */}
+                    <div className="h-[240px] w-full bg-[#f6f7f8] rounded-2xl flex items-center justify-center mb-5 relative overflow-hidden transition-all duration-300 hover:bg-[#ecedee]">
+                      <div className="absolute w-[60%] h-4 bottom-8 bg-black/[0.03] blur-lg rounded-full" />
+                      
+                      {/* Render horizontal detail view */}
+                      <GlassesRenderer id={p.id} viewType="side" />
+                      
+                      {p.soldOut && (
+                        <span className="absolute top-4 left-4 bg-black text-[#fafafa] text-[8px] font-bold px-2 py-0.5 tracking-wider uppercase rounded-sm">
+                          SOLD OUT
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Side Info */}
+                    <div className="px-1 flex flex-col gap-1">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h4 className="text-[11px] font-bold tracking-widest text-[#444] uppercase">
+                            VIEW DETAILS
+                          </h4>
+                          <p className="text-[9px] font-mono tracking-widest text-[#bbb] mt-0.5">
+                            {p.engName} / Side Angle
+                          </p>
+                        </div>
+                        <span className={`text-[12px] font-mono font-medium ${p.soldOut ? 'text-black/30 line-through' : 'text-brand-ink/80'}`}>
+                          {p.price}
+                        </span>
+                      </div>
+                    </div>
+                  </motion.article>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+        </div>
       )}
     </section>
   );
