@@ -40,12 +40,24 @@ function ProductCard({
       onClick={() => onSelectProduct && onSelectProduct(p)}
     >
       {/* Image / SVG Container on a beautiful premium gray background */}
-      <div className="h-[240px] w-full bg-[#f6f7f8] rounded-2xl flex items-center justify-center mb-5 relative overflow-hidden transition-all duration-300 hover:bg-[#ecedee]">
+      <div className={`h-[240px] w-full rounded-2xl flex items-center justify-center mb-5 relative overflow-hidden transition-all duration-300 ${
+        p.id === "flower-1" || p.id === "flower-2" ? "bg-[#ffffff]" : 
+        "bg-[#f6f7f8] hover:bg-[#ecedee]"
+      }`}>
         {/* Clean soft shadow beneath glasses inside display box */}
         <div className="absolute w-[60%] h-4 bottom-8 bg-black/[0.03] blur-lg rounded-full" />
         
-        {/* Render the realistic vector representation */}
-        <GlassesRenderer id={p.id} viewType="front" />
+        {/* Render the realistic representation (image file or fallback SVG) */}
+        {p.images?.thumbnail ? (
+          <img 
+            src={p.images.thumbnail} 
+            alt={p.name} 
+            className="w-full h-full object-contain p-0 group-hover:scale-105 transition-transform duration-500 ease-out" 
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          <GlassesRenderer id={p.id} viewType="front" />
+        )}
         
         {/* Status Tags */}
         {p.soldOut && (

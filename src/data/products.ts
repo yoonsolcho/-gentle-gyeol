@@ -9,6 +9,10 @@ export interface Product {
   soldOut?: boolean;
   statusText?: string;
   hasTag?: string;
+  images?: {
+    thumbnail: string;
+    detail: string[];
+  };
 }
 
 export const productsData: Product[] = [
@@ -61,6 +65,15 @@ export const productsData: Product[] = [
     category: "꽃 컬렉션",
     color: "silver",
     type: "sunglasses",
+    images: {
+      thumbnail: "/assets/products/꽃/매화_대각선.png",
+      detail: [
+        "/assets/products/꽃/매화_대각선.png",
+        "/assets/products/꽃/매화_정면.png",
+        "/assets/products/꽃/매화_측면.png",
+        "/assets/products/꽃/매화/매화_제품상세컷2.jpeg"
+      ]
+    }
   },
   {
     id: "flower-2",
@@ -70,6 +83,14 @@ export const productsData: Product[] = [
     category: "꽃 컬렉션",
     color: "rose",
     type: "glasses",
+    images: {
+      thumbnail: "/assets/products/꽃/벚꽃/벚꽃_대각선.png",
+      detail: [
+        "/assets/products/꽃/벚꽃/벚꽃_대각선.png",
+        "/assets/products/꽃/벚꽃/벚꽃_정면.png",
+        "/assets/products/꽃/벚꽃/벚꽃_측면.png"
+      ]
+    }
   },
   {
     id: "flower-3",

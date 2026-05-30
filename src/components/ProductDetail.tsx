@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, ReactNode, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Bookmark, Plus, Minus, MessageSquare, X, ArrowDown, ChevronRight, ChevronLeft, ArrowLeft } from 'lucide-react';
 import { Product } from '../data/products';
@@ -75,6 +75,12 @@ export default function ProductDetail({
 }: Props) {
   const [activeTab, setActiveTab] = useState<"detail" | "preorder" | "shipping">("detail");
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  // Reset active image index on product change
+  useEffect(() => {
+    setActiveImageIndex(0);
+  }, [product.id]);
   const isBookmarked = wishlistItems.some(w => w.id === product.id);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState<{ sender: "user" | "bot"; text: string }[]>([
@@ -229,47 +235,77 @@ export default function ProductDetail({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-stretch min-h-[600px]">
           
           {/* LEFT AREA: Realistic 3D Showcase (Responsive width 7 columns) */}
-          <div className="lg:col-span-8 flex flex-col justify-between bg-[#f2ede9]/40 border border-black/5 rounded-3xl p-6 md:p-12 relative overflow-hidden group/showcase">
-            <div className="absolute top-4 right-4 text-[10px] font-mono font-semibold text-neutral-400 tracking-wider">
-              STUDIO CAPTURE STYLE
-            </div>
+          <div className={`lg:col-span-8 flex flex-col justify-between border border-black/5 rounded-3xl p-6 md:p-12 relative overflow-hidden group/showcase transition-colors duration-500 ${
+            product.id === "flower-1" || product.id === "flower-2" ? "bg-[#ffffff]" :
+            "bg-[#f2ede9]/40"
+          }`}>
 
             {/* Backplane Accent Pattern */}
             <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-[0.03] pointer-events-none select-none">
               <span className="font-serif text-[180px] font-light leading-none tracking-tighter">結</span>
             </div>
 
-            {/* Micro Floating Actions to rotate or change views */}
-            <div className="absolute bottom-6 left-6 flex items-center gap-2 z-10">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 bg-white/70 border border-black/5 px-3 py-1 rounded-full">
-                Front Angle View
-              </span>
-            </div>
+
 
             {/* The Glasses Container - Centered nicely */}
-            <div className="flex-1 flex items-center justify-center py-10 min-h-[300px] md:min-h-[420px] relative">
-              {/* Rendering of SVG based on dynamic indexes to make it fully visual */}
-              <motion.div 
-                key={`${product.id}-${currentColor.id}`}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.45 }}
-                className="w-full max-w-[480px] flex justify-center items-center"
-              >
-                <GlassesRenderer id={product.id} viewType="front" />
-              </motion.div>
+            <div className="flex-1 flex flex-col items-center justify-center py-6 min-h-[300px] md:min-h-[420px] relative">
+              {product.images?.detail && product.images.detail.length > 0 ? (
+                <div className="w-full flex flex-col items-center justify-between h-full min-h-[380px]">
+                  {/* Active main image */}
+                  <motion.div 
+                    key={`${product.id}-${activeImageIndex}`}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.35 }}
+                    className="flex-1 flex justify-center items-center w-full max-w-[560px] h-[285px] md:h-[355px] mb-6"
+                  >
+                    <img 
+                      src={product.images.detail[activeImageIndex]} 
+                      alt={`${product.name} - ${activeImageIndex + 1}`}
+                      className="max-w-full max-h-full object-contain"
+                      referrerPolicy="no-referrer"
+                    />
+                  </motion.div>
+
+                  {/* Elegant Thumbnails slider */}
+                  <div className="flex gap-3 justify-center z-10">
+                    {product.images.detail.map((imgUrl, i) => {
+                      return (
+                        <button
+                          key={i}
+                          onClick={() => setActiveImageIndex(i)}
+                          className={`w-14 h-14 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer relative ${
+                            activeImageIndex === i 
+                              ? "opacity-100 scale-105 ring-2 ring-neutral-900 ring-offset-1 shadow-md" 
+                              : "opacity-50 hover:opacity-80"
+                          }`}
+                        >
+                          <img 
+                            src={imgUrl} 
+                            alt={`View ${i + 1}`} 
+                            className="w-full h-full object-contain p-1 bg-white"
+                            referrerPolicy="no-referrer"
+                          />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (
+                /* Rendering of SVG based on dynamic indexes to make it fully visual */
+                <motion.div 
+                  key={`${product.id}-${currentColor.id}`}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.45 }}
+                  className="w-full max-w-[480px] flex justify-center items-center"
+                >
+                  <GlassesRenderer id={product.id} viewType="front" />
+                </motion.div>
+              )}
             </div>
 
-            {/* Bottom Centered Arrow Down (Matches user mock image precisely) */}
-            <div className="flex justify-center pt-4">
-              <motion.div 
-                animate={{ y: [0, 4, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                className="p-2 border border-black/5 bg-white/70 hover:bg-white rounded-full transition-colors text-neutral-500 shadow-sm hover:shadow"
-              >
-                <ArrowDown size={18} />
-              </motion.div>
-            </div>
+
           </div>
 
           {/* RIGHT AREA: Product Detail & Control Column (Responsive width 4 columns) */}
@@ -279,9 +315,6 @@ export default function ProductDetail({
               {/* Product Heading & Price */}
               <div className="flex justify-between items-start gap-4">
                 <div className="flex-1">
-                  <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-amber-800 font-mono block mb-1">
-                    GENTLE 結 COLLECTION
-                  </span>
                   <h1 className="font-sans text-2xl md:text-3xl font-bold tracking-tight text-neutral-900 leading-tight">
                     {product.name}
                   </h1>
@@ -489,7 +522,7 @@ export default function ProductDetail({
           {isChatOpen ? <X size={20} /> : <MessageSquare size={20} />}
           
           {!isChatOpen && (
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping" />
+            <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full" />
           )}
         </button>
 
