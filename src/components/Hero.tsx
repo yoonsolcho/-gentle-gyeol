@@ -6,7 +6,7 @@ interface Props {
 
 export default function Hero({ onOpenStory }: Props) {
   return (
-    <section className="relative h-[620px] overflow-hidden bg-cover bg-center" style={{ backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(244,245,246,0.95)), url('https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=1800&q=80')` }}>
+    <section className="relative h-[620px] overflow-hidden bg-cover bg-center" style={{ backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(244,245,246,0.95)), url('/assets/products/꽃/매화/매화_제품상세컷2.jpeg')` }}>
       <div className="pattern-overlay" />
       
       <div className="absolute left-6 md:left-12 bottom-16 max-w-[620px] z-10">

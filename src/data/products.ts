@@ -138,6 +138,14 @@ export const productsData: Product[] = [
     category: "궁궐 컬렉션",
     color: "black",
     type: "sunglasses",
+    images: {
+      thumbnail: "/assets/products/궁궐/기와/기와_대각선-1.png",
+      detail: [
+        "/assets/products/궁궐/기와/기와_대각선-1.png",
+        "/assets/products/궁궐/기와/기와_정면.jpeg",
+        "/assets/products/궁궐/기와/기와_측면-1.png"
+      ]
+    }
   },
   {
     id: "palace-2",

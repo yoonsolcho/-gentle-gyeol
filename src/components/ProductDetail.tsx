@@ -236,7 +236,7 @@ export default function ProductDetail({
           
           {/* LEFT AREA: Realistic 3D Showcase (Responsive width 7 columns) */}
           <div className={`lg:col-span-8 flex flex-col justify-between border border-black/5 rounded-3xl p-6 md:p-12 relative overflow-hidden group/showcase transition-colors duration-500 ${
-            product.id === "flower-1" || product.id === "flower-2" || product.id === "flower-3" || product.id === "flower-4" ? "bg-[#ffffff]" :
+            product.images || product.id === "flower-1" || product.id === "flower-2" || product.id === "flower-3" || product.id === "flower-4" ? "bg-[#ffffff]" :
             "bg-[#f2ede9]/40"
           }`}>
 
