@@ -12,7 +12,7 @@ import { Product, productsData } from './data/products';
 import CartModal, { CartItem } from './components/CartModal';
 
 export default function App() {
-  const [activeCollection, setActiveCollection] = useState("전체보기");
+  const [activeCollection, setActiveCollection] = useState("홈");
   const [view, setView] = useState<'home' | 'story' | 'store'>('home');
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -152,7 +152,7 @@ export default function App() {
                 onOpenStory={() => handleNavigate('story')}
               />
               
-              {activeCollection === "전체보기" && (
+              {activeCollection === "홈" && (
                 <Hero onOpenStory={() => handleNavigate('story')} />
               )}
 
@@ -162,6 +162,7 @@ export default function App() {
                 onSelectProduct={handleSelectProduct}
                 wishlistItems={wishlistItems}
                 onToggleWishlist={handleToggleWishlist}
+                onChangeCollection={handleSelectCollection}
               />
             </motion.div>
           ) : view === 'story' ? (

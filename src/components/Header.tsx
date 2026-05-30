@@ -105,23 +105,56 @@ export default function Header({
           </AnimatePresence>
         </div>
 
-        <button 
-          onClick={() => onChangeView && onChangeView('story')} 
-          className="hover:opacity-60 transition-opacity h-full flex items-center cursor-pointer text-amber-700 font-bold"
+        <div
+          className="relative h-full flex items-center"
+          onMouseEnter={() => setIsMoreHovered(true)}
+          onMouseLeave={() => setIsMoreHovered(false)}
         >
-          결의 시선 Story
-        </button>
-
-        <button 
-          onClick={() => onChangeView && onChangeView('store')} 
-          className="hover:opacity-60 transition-opacity h-full flex items-center cursor-pointer text-[#444] font-semibold"
-        >
-          오프라인 스토어
-        </button>
+          <button 
+            className="hover:opacity-60 transition-opacity h-full flex items-center cursor-pointer font-semibold"
+          >
+            더 알아보기
+          </button>
+          
+          <AnimatePresence>
+            {isMoreHovered && (
+              <motion.div
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 2 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
+                className="absolute top-[48px] -left-6 bg-brand-bg border-x border-b border-black/5 shadow-xl rounded-b-xl px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold text-brand-ink z-[1100]"
+              >
+                <button 
+                  onClick={() => onChangeView && onChangeView('story')}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer text-amber-700 font-bold"
+                >
+                  결의 시선 스토리
+                </button>
+                <button 
+                  onClick={() => onChangeView && onChangeView('store')}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
+                >
+                  오프라인 스토어
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </nav>
 
       <button 
-        onClick={() => onChangeView && onChangeView('home')}
+        onClick={() => {
+          if (onChangeCollection) {
+            onChangeCollection("홈");
+          }
+          if (onSearchChange) {
+            onSearchChange("");
+          }
+          if (onChangeView) {
+            onChangeView('home');
+          }
+        }}
         className="absolute left-1/2 -translate-x-1/2 font-sans text-[10px] sm:text-xs md:text-sm lg:text-base font-extrabold tracking-[0.1em] sm:tracking-[0.2em] lg:tracking-[0.25em] uppercase whitespace-nowrap cursor-pointer hover:opacity-75 transition-opacity text-neutral-950"
       >
         <motion.span
@@ -250,18 +283,18 @@ export default function Header({
                 <div style={{ fontFamily: 'Georgia, serif' }} className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-2">More / 더 알아보기</div>
                 <div className="flex flex-col gap-1 text-[13px] text-brand-ink">
                   <button 
-                    onClick={() => { if (onChangeView) onChangeView('store'); setIsMobileMenuOpen(false); }}
-                    className="w-full text-left py-2 hover:opacity-60 transition-opacity cursor-pointer flex justify-between items-center"
-                  >
-                    <span className="font-semibold">오프라인 스토어</span>
-                    <span className="text-[10px] font-mono opacity-50">STORE</span>
-                  </button>
-                  <button 
                     onClick={() => { if (onChangeView) onChangeView('story'); setIsMobileMenuOpen(false); }}
                     className="w-full text-left py-2 hover:opacity-60 transition-opacity cursor-pointer flex justify-between items-center text-amber-700 font-bold"
                   >
                     <span>결의 시선 스토리</span>
                     <span className="text-[10px] font-mono opacity-75">STORY</span>
+                  </button>
+                  <button 
+                    onClick={() => { if (onChangeView) onChangeView('store'); setIsMobileMenuOpen(false); }}
+                    className="w-full text-left py-2 hover:opacity-60 transition-opacity cursor-pointer flex justify-between items-center"
+                  >
+                    <span className="font-semibold">오프라인 스토어</span>
+                    <span className="text-[10px] font-mono opacity-50">STORE</span>
                   </button>
                 </div>
               </div>

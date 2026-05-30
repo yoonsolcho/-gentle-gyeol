@@ -271,10 +271,10 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
         <div className="flex items-center gap-4">
           <button 
             onClick={onBack}
-            className="group flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-neutral-500 hover:text-black transition-colors cursor-pointer"
+            className="group p-2 -ml-2 rounded-full hover:bg-neutral-100 flex items-center justify-center text-neutral-500 hover:text-[#111] transition-all cursor-pointer"
+            aria-label="뒤로가기"
           >
-            <ArrowLeft size={15} />
-            BACK
+            <ArrowLeft size={18} strokeWidth={2.4} />
           </button>
           
           <div className="h-4 w-[1px] bg-neutral-200" />
@@ -296,7 +296,7 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
                 : 'text-neutral-500 hover:text-black hover:bg-neutral-200/30'
             }`}
           >
-            전체 매장
+            전체
           </button>
           <button
             onClick={() => setFilterType('domestic')}
@@ -306,7 +306,7 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
                 : 'text-neutral-500 hover:text-black hover:bg-neutral-200/30'
             }`}
           >
-            국내 매장 ({STORES_DATA.filter(s => s.category === 'domestic').length})
+            국내 ({STORES_DATA.filter(s => s.category === 'domestic').length})
           </button>
           <button
             onClick={() => setFilterType('global')}
@@ -316,7 +316,7 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
                 : 'text-neutral-500 hover:text-black hover:bg-neutral-200/30'
             }`}
           >
-            글로벌 스토어 ({STORES_DATA.filter(s => s.category === 'global').length})
+            글로벌 ({STORES_DATA.filter(s => s.category === 'global').length})
           </button>
         </div>
       </div>
@@ -349,8 +349,8 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
 
             {/* Total count details */}
             <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center justify-between border-b border-black/5 pb-2">
-              <span>LISTING STORES</span>
-              <span>{filteredStores.length} LOCATIONS FOUND</span>
+              <span>STORES</span>
+              <span>{filteredStores.length} FOUND</span>
             </div>
 
             {/* List scrollbox container */}
@@ -417,15 +417,8 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
 
           </div>
 
-          {/* Quick legal / signature bottom accent line inside sidebar */}
-          <div className="pt-4 border-t border-black/5 mt-2 text-center leading-relaxed shrink-0">
-            <span className="text-[10.5px] font-bold text-neutral-400 font-mono tracking-widest block">
-              GENTLE MONSTER ART REVELATION
-            </span>
-            <span className="text-[9px] text-neutral-300 block mt-1">
-              &copy; 1:1 Live Store Navigation Service.
-            </span>
-          </div>
+          {/* Clean minimal separator instead of advertising */}
+          <div className="pt-2 border-t border-black/5" />
 
         </div>
 
