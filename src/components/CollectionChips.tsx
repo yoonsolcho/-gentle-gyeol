@@ -46,13 +46,6 @@ export default function CollectionChips({ activeCollection, onChangeCollection, 
             검색어 지우기 ✕
           </button>
         )}
-
-        <button 
-          onClick={() => alert("현재 라이브 필터 설정 기준: 전체 장인 단독 제작 라인업") }
-          className="flex items-center gap-1.5 text-[11.5px] font-semibold text-[#111] hover:opacity-60 transition-opacity cursor-pointer whitespace-nowrap border-l border-neutral-100 pl-3 md:pl-4"
-        >
-          필터 <SlidersHorizontal size={12.5} strokeWidth={2.2} />
-        </button>
       </div>
     </section>
   );

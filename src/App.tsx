@@ -13,7 +13,6 @@ import CartModal, { CartItem } from './components/CartModal';
 
 export default function App() {
   const [activeCollection, setActiveCollection] = useState("전체보기");
-  const [activeCategoryFilter, setActiveCategoryFilter] = useState<'all' | 'sunglasses' | 'glasses'>('all');
   const [view, setView] = useState<'home' | 'story' | 'store'>('home');
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -30,9 +29,8 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
-  const handleSelectCollection = (collection: string, categoryFilter: 'all' | 'sunglasses' | 'glasses' = 'all') => {
+  const handleSelectCollection = (collection: string) => {
     setActiveCollection(collection);
-    setActiveCategoryFilter(categoryFilter);
     setSelectedProduct(null);
     setView('home');
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -160,7 +158,6 @@ export default function App() {
 
               <ProductGrid 
                 activeCollection={activeCollection} 
-                activeCategoryFilter={activeCategoryFilter}
                 searchQuery={searchQuery} 
                 onSelectProduct={handleSelectProduct}
                 wishlistItems={wishlistItems}
