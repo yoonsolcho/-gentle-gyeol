@@ -41,7 +41,7 @@ function ProductCard({
     >
       {/* Image / SVG Container on a beautiful premium gray background */}
       <div className={`h-[240px] w-full rounded-2xl flex items-center justify-center mb-5 relative overflow-hidden transition-all duration-300 ${
-        p.id === "flower-1" || p.id === "flower-2" || p.id === "flower-3" ? "bg-[#ffffff]" : 
+        p.id === "flower-1" || p.id === "flower-2" || p.id === "flower-3" || p.id === "flower-4" ? "bg-[#ffffff]" : 
         "bg-[#f6f7f8] hover:bg-[#ecedee]"
       }`}>
         {/* Clean soft shadow beneath glasses inside display box */}
@@ -80,9 +80,6 @@ function ProductCard({
               {p.name}
             </h3>
             <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5">
-              <span className="text-[9px] font-mono tracking-widest text-[#999] uppercase">
-                {p.engName}
-              </span>
               <span className="text-[9px] text-neutral-500 font-mono font-semibold">
                 {p.price}
               </span>

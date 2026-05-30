@@ -119,6 +119,14 @@ export const productsData: Product[] = [
     type: "glasses",
     soldOut: true,
     statusText: "품절",
+    images: {
+      thumbnail: "/assets/products/꽃/국화/국화_대각선-1.png",
+      detail: [
+        "/assets/products/꽃/국화/국화_대각선-1.png",
+        "/assets/products/꽃/국화/국화_정면-1.png",
+        "/assets/products/꽃/국화/국화_측면-1.png"
+      ]
+    }
   },
 
   // 궁궐 컬렉션
