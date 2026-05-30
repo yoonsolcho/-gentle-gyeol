@@ -154,10 +154,6 @@ export default function Story({ onBack }: Props) {
             <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
             <span>컬렉션 쇼룸으로 돌아가기</span>
           </button>
-          
-          <div className="text-[11px] font-mono tracking-widest text-brand-ink/40">
-            SHOWROOM / BRAND COLLABORATION STORY
-          </div>
         </div>
 
         {/* Editorial Title Header */}

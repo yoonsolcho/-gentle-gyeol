@@ -184,6 +184,14 @@ export const productsData: Product[] = [
     category: "날개 컬렉션",
     color: "monochrome",
     type: "glasses",
+    images: {
+      thumbnail: "/assets/products/날개/비상/비상_대각선-1.png",
+      detail: [
+        "/assets/products/날개/비상/비상_대각선-1.png",
+        "/assets/products/날개/비상/비상_정면.jpeg",
+        "/assets/products/날개/비상/비상_측면-1.png"
+      ]
+    }
   },
   {
     id: "wing-2",

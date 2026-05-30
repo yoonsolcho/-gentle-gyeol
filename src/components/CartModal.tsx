@@ -168,7 +168,16 @@ export default function CartModal({
                       }}
                       className="w-28 h-16 bg-neutral-50 hover:bg-neutral-100 rounded-xl flex items-center justify-center p-1.5 shrink-0 border border-black/5 cursor-pointer relative"
                     >
-                      <GlassesRenderer id={item.product.id} viewType="front" />
+                      {item.product.images?.thumbnail ? (
+                        <img 
+                          src={item.product.images.thumbnail} 
+                          alt={item.product.name} 
+                          className="w-full h-full object-contain p-0"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <GlassesRenderer id={item.product.id} viewType="front" />
+                      )}
                     </div>
 
                     {/* Metadata summary */}
@@ -329,7 +338,16 @@ export default function CartModal({
                     }}
                     className="w-24 h-16 bg-neutral-50 hover:bg-neutral-100 rounded-xl flex items-center justify-center p-1 border border-black/5 cursor-pointer shrink-0"
                   >
-                    <GlassesRenderer id={prod.id} viewType="front" />
+                    {prod.images?.thumbnail ? (
+                      <img 
+                        src={prod.images.thumbnail} 
+                        alt={prod.name} 
+                        className="w-full h-full object-contain p-0"
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <GlassesRenderer id={prod.id} viewType="front" />
+                    )}
                   </div>
 
                   {/* Details metadata */}

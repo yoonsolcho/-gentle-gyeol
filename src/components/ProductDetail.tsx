@@ -207,12 +207,6 @@ export default function ProductDetail({
             BACK TO LIST
           </button>
           
-          <div className="flex items-center gap-4 text-xs font-bold font-mono tracking-widest text-neutral-400">
-            <span>COLLECTION</span>
-            <span>/</span>
-            <span>{product.category.toUpperCase()}</span>
-          </div>
-
           <div className="flex items-center gap-2">
             <button 
               onClick={handlePrevProduct}
@@ -235,10 +229,7 @@ export default function ProductDetail({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-stretch min-h-[600px]">
           
           {/* LEFT AREA: Realistic 3D Showcase (Responsive width 7 columns) */}
-          <div className={`lg:col-span-8 flex flex-col justify-between border border-black/5 rounded-3xl p-6 md:p-12 relative overflow-hidden group/showcase transition-colors duration-500 ${
-            product.images || product.id === "flower-1" || product.id === "flower-2" || product.id === "flower-3" || product.id === "flower-4" ? "bg-[#ffffff]" :
-            "bg-[#f2ede9]/40"
-          }`}>
+          <div className="lg:col-span-8 flex flex-col justify-between border border-black/5 rounded-3xl p-6 md:p-12 relative overflow-hidden group/showcase transition-colors duration-500 bg-[#ffffff]">
 
             {/* Backplane Accent Pattern */}
             <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-[0.03] pointer-events-none select-none">

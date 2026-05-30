@@ -39,11 +39,8 @@ function ProductCard({
       className="flex flex-col group cursor-pointer"
       onClick={() => onSelectProduct && onSelectProduct(p)}
     >
-      {/* Image / SVG Container on a beautiful premium gray background */}
-      <div className={`h-[240px] w-full rounded-2xl flex items-center justify-center mb-5 relative overflow-hidden transition-all duration-300 ${
-        p.images || p.id === "flower-1" || p.id === "flower-2" || p.id === "flower-3" || p.id === "flower-4" ? "bg-[#ffffff]" : 
-        "bg-[#f6f7f8] hover:bg-[#ecedee]"
-      }`}>
+      {/* Image / SVG Container on a beautiful premium white background */}
+      <div className="h-[240px] w-full bg-white rounded-2xl flex items-center justify-center mb-5 relative overflow-hidden transition-all duration-300">
         {/* Clean soft shadow beneath glasses inside display box */}
         <div className="absolute w-[60%] h-4 bottom-8 bg-black/[0.03] blur-lg rounded-full" />
         

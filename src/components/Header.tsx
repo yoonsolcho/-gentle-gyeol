@@ -167,9 +167,11 @@ export default function Header({
       </button>
 
       <nav className="flex items-center gap-1.5 sm:gap-2.5 md:gap-4 text-xs font-semibold">
-        <span className="hidden lg:inline text-[11px] font-bold opacity-75 mr-1 font-mono tracking-wide">
-          {searchQuery ? `"${searchQuery}" 검색 중` : "피톳 M021"}
-        </span>
+        {searchQuery && (
+          <span className="hidden lg:inline text-[11px] font-bold opacity-75 mr-1 font-mono tracking-wide">
+            "{searchQuery}" 검색 중
+          </span>
+        )}
         <button 
           onClick={() => {
             setIsSearchOpen(true);
