@@ -84,10 +84,14 @@ export default function GlassesRenderer({ id, viewType = "front" }: Props) {
     if (id === "wing-1" || id === "wing-4" || id === "craft-4") lensColor = "url(#lens-light)";
     if (id === "pattern-2" || id === "craft-3") lensColor = "url(#lens-amber)";
 
-    // All flower models use pristine silver metal and deep dark lenses to match the high-end photographs
+    // Flower models: flower-1 & flower-3 are dark sunglasses, flower-2 & flower-4 are light-lens glasses
     if (isFlower) {
       metalColor = "url(#silver)";
-      lensColor = "url(#lens-dark)";
+      if (id === "flower-2" || id === "flower-4") {
+        lensColor = "url(#lens-light)";
+      } else {
+        lensColor = "url(#lens-dark)";
+      }
     } else {
       if (id === "pattern-2") metalColor = "url(#gold)";
     }

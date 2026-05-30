@@ -1,23 +1,35 @@
 import { useState } from 'react';
-import { Search, Heart, Square } from 'lucide-react';
+import { Search, Heart, Square, User, ShoppingBag } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface Props {
-  onChangeCollection?: (collection: string) => void;
-  onChangeView?: (view: 'home' | 'story') => void;
+  onChangeCollection?: (collection: string, typeFilter?: 'all' | 'sunglasses' | 'glasses') => void;
+  onChangeView?: (view: 'home' | 'story' | 'store') => void;
   searchQuery?: string;
   onSearchChange?: (query: string) => void;
+  cartCount?: number;
+  wishlistCount?: number;
+  onOpenCart?: (tab: 'cart' | 'wishlist') => void;
 }
 
-export default function Header({ onChangeCollection, onChangeView, searchQuery = "", onSearchChange }: Props) {
+export default function Header({ 
+  onChangeCollection, 
+  onChangeView, 
+  searchQuery = "", 
+  onSearchChange,
+  cartCount = 0,
+  wishlistCount = 0,
+  onOpenCart
+}: Props) {
   const [isSunglassesHovered, setIsSunglassesHovered] = useState(false);
   const [isGlassesHovered, setIsGlassesHovered] = useState(false);
+  const [isCollectionsHovered, setIsCollectionsHovered] = useState(false);
   const [isMoreHovered, setIsMoreHovered] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  const handleSelectCollection = (name: string) => {
+  const handleSelectCollection = (name: string, typeFilter?: 'all' | 'sunglasses' | 'glasses') => {
     if (onChangeCollection) {
-      onChangeCollection(name);
+      onChangeCollection(name, typeFilter);
     }
     if (onChangeView) {
       onChangeView('home');
@@ -46,32 +58,32 @@ export default function Header({ onChangeCollection, onChangeView, searchQuery =
                 className="absolute top-[48px] -left-6 bg-brand-bg border-x border-b border-black/5 shadow-xl rounded-b-xl px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold text-brand-ink z-[1100]"
               >
                 <button 
-                  onClick={() => handleSelectCollection("전체보기")}
-                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                  onClick={() => handleSelectCollection("전체보기", "sunglasses")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
                 >
                   전체보기
                 </button>
                 <button 
-                  onClick={() => handleSelectCollection("꽃 컬렉션")}
-                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                  onClick={() => handleSelectCollection("꽃 컬렉션", "sunglasses")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
                 >
                   꽃 컬렉션
                 </button>
                 <button 
-                  onClick={() => handleSelectCollection("궁궐 컬렉션")}
-                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                  onClick={() => handleSelectCollection("궁궐 컬렉션", "sunglasses")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
                 >
                   궁궐 컬렉션
                 </button>
                 <button 
-                  onClick={() => handleSelectCollection("날개 컬렉션")}
-                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                  onClick={() => handleSelectCollection("날개 컬렉션", "sunglasses")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
                 >
                   날개 컬렉션
                 </button>
                 <button 
-                  onClick={() => handleSelectCollection("문양 컬렉션")}
-                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                  onClick={() => handleSelectCollection("문양 컬렉션", "sunglasses")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
                 >
                   문양 컬렉션
                 </button>
@@ -99,32 +111,32 @@ export default function Header({ onChangeCollection, onChangeView, searchQuery =
                 className="absolute top-[48px] -left-6 bg-brand-bg border-x border-b border-black/5 shadow-xl rounded-b-xl px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold text-brand-ink z-[1100]"
               >
                 <button 
-                  onClick={() => handleSelectCollection("전체보기")}
-                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                  onClick={() => handleSelectCollection("전체보기", "glasses")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
                 >
                   전체보기
                 </button>
                 <button 
-                  onClick={() => handleSelectCollection("꽃 컬렉션")}
-                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                  onClick={() => handleSelectCollection("꽃 컬렉션", "glasses")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
                 >
                   꽃 컬렉션
                 </button>
                 <button 
-                  onClick={() => handleSelectCollection("궁궐 컬렉션")}
-                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                  onClick={() => handleSelectCollection("궁궐 컬렉션", "glasses")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
                 >
                   궁궐 컬렉션
                 </button>
                 <button 
-                  onClick={() => handleSelectCollection("날개 컬렉션")}
-                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                  onClick={() => handleSelectCollection("날개 컬렉션", "glasses")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
                 >
                   날개 컬렉션
                 </button>
                 <button 
-                  onClick={() => handleSelectCollection("문양 컬렉션")}
-                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap"
+                  onClick={() => handleSelectCollection("문양 컬렉션", "glasses")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
                 >
                   문양 컬렉션
                 </button>
@@ -133,12 +145,70 @@ export default function Header({ onChangeCollection, onChangeView, searchQuery =
           </AnimatePresence>
         </div>
 
-        <button 
-          onClick={() => onChangeView && onChangeView('home')} 
-          className="hover:opacity-60 transition-opacity cursor-pointer font-semibold"
+        <div
+          className="relative h-full flex items-center"
+          onMouseEnter={() => setIsCollectionsHovered(true)}
+          onMouseLeave={() => setIsCollectionsHovered(false)}
         >
-          컬렉션
-        </button>
+          <button 
+            onClick={() => onChangeView && onChangeView('home')} 
+            className="hover:opacity-60 transition-opacity h-full flex items-center cursor-pointer font-semibold"
+          >
+            컬렉션
+          </button>
+          
+          <AnimatePresence>
+            {isCollectionsHovered && (
+              <motion.div
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 2 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
+                className="absolute top-[48px] -left-6 bg-brand-bg border-x border-b border-black/5 shadow-xl rounded-b-xl px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold text-brand-ink z-[1100]"
+              >
+                <button 
+                  onClick={() => handleSelectCollection("전체보기", "all")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
+                >
+                  전체보기
+                </button>
+                <button 
+                  onClick={() => handleSelectCollection("꽃 컬렉션", "all")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
+                >
+                  꽃 컬렉션
+                </button>
+                <button 
+                  onClick={() => handleSelectCollection("궁궐 컬렉션", "all")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
+                >
+                  궁궐 컬렉션
+                </button>
+                <button 
+                  onClick={() => handleSelectCollection("날개 컬렉션", "all")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
+                >
+                  날개 컬렉션
+                </button>
+                <button 
+                  onClick={() => handleSelectCollection("문양 컬렉션", "all")}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
+                >
+                  문양 컬렉션
+                </button>
+                
+                {/* 하단 메뉴: 결의 시선 */}
+                <div className="h-[1px] bg-black/5 my-1" />
+                <button 
+                  onClick={() => onChangeView && onChangeView('story')}
+                  className="text-left text-amber-700 hover:text-amber-800 transition-all duration-200 tracking-tight whitespace-nowrap font-bold cursor-pointer flex items-center gap-1"
+                >
+                  결의 시선 <span className="text-[9px] font-normal font-mono">STORY</span>
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
         <div
           className="relative h-full flex items-center"
           onMouseEnter={() => setIsMoreHovered(true)}
@@ -157,9 +227,12 @@ export default function Header({ onChangeCollection, onChangeView, searchQuery =
                 transition={{ duration: 0.15, ease: "easeOut" }}
                 className="absolute top-[48px] -left-6 bg-brand-bg border-x border-b border-black/5 shadow-xl rounded-b-xl px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold text-brand-ink z-[1100]"
               >
-                <a href="#" className="hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap">
+                <button 
+                  onClick={() => onChangeView && onChangeView('store')}
+                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
+                >
                   스토어
-                </a>
+                </button>
                 <button 
                   onClick={() => onChangeView && onChangeView('story')}
                   className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer"
@@ -174,20 +247,20 @@ export default function Header({ onChangeCollection, onChangeView, searchQuery =
 
       <button 
         onClick={() => onChangeView && onChangeView('home')}
-        className="absolute left-1/2 -translate-x-1/2 font-serif text-lg md:text-xl tracking-[0.12em] font-normal whitespace-nowrap cursor-pointer hover:opacity-75 transition-opacity"
+        className="absolute left-1/2 -translate-x-1/2 font-sans text-xs md:text-base font-extrabold tracking-[0.25em] uppercase whitespace-nowrap cursor-pointer hover:opacity-75 transition-opacity text-neutral-950"
       >
         <motion.span
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          결의 시선
+          GENTLE MONSTER
         </motion.span>
       </button>
 
-      <nav className="flex items-center gap-2.5 md:gap-4">
-        <span className="hidden md:inline text-[12px] font-medium opacity-60">
-          {searchQuery ? `"${searchQuery}" 검색 중` : "청화 02(BL)"}
+      <nav className="flex items-center gap-2.5 md:gap-4 text-xs font-semibold">
+        <span className="hidden md:inline text-[11px] font-bold opacity-75 mr-1 font-mono tracking-wide">
+          {searchQuery ? `"${searchQuery}" 검색 중` : "피톳 M021"}
         </span>
         <button 
           onClick={() => {
@@ -195,12 +268,26 @@ export default function Header({ onChangeCollection, onChangeView, searchQuery =
             if (onChangeView) onChangeView('home');
           }}
           className="p-1.5 hover:bg-black/5 rounded-full transition-colors cursor-pointer"
-          title="제품명 검색"
         >
-          <Search size={18} strokeWidth={1.5} />
+          <Search size={17} strokeWidth={1.8} />
         </button>
-        <button className="p-1.5 hover:bg-black/5 rounded-full transition-colors"><Heart size={18} strokeWidth={1.5} /></button>
-        <button className="p-1.5 hover:bg-black/5 rounded-full transition-colors"><Square size={18} strokeWidth={1.5} /></button>
+
+        <button className="p-1.5 hover:bg-black/5 rounded-full transition-colors cursor-pointer">
+          <User size={17} strokeWidth={1.8} />
+        </button>
+        <button 
+          onClick={() => onOpenCart && onOpenCart('cart')}
+          className="p-1.5 hover:bg-black/5 rounded-full transition-colors relative cursor-pointer" 
+        >
+          <ShoppingBag size={17} strokeWidth={1.8} />
+          {cartCount > 0 ? (
+            <span className="absolute -top-1 -right-1 bg-neutral-900 text-white text-[8px] font-mono font-bold w-4 h-4 rounded-full flex items-center justify-center select-none shadow-xs">
+              {cartCount}
+            </span>
+          ) : (
+            <span className="absolute top-0.5 right-0.5 w-[6px] h-[6px] bg-neutral-900 rounded-full" />
+          )}
+        </button>
       </nav>
 
       {/* Slide-down Premium Search Overlay Bar */}

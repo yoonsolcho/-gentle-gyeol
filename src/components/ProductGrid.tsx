@@ -1,63 +1,132 @@
+import { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { productsData } from '../data/products';
 import GlassesRenderer from './GlassesRenderer';
 
+import { Product } from '../data/products';
+
 interface Props {
   activeCollection: string;
+  activeCategoryFilter?: 'all' | 'sunglasses' | 'glasses';
   searchQuery?: string;
+  onSelectProduct?: (product: Product) => void;
+  wishlistItems?: Product[];
+  onToggleWishlist?: (product: Product) => void;
 }
 
-export default function ProductGrid({ activeCollection, searchQuery = "" }: Props) {
+export default function ProductGrid({ 
+  activeCollection, 
+  activeCategoryFilter = 'all',
+  searchQuery = "", 
+  onSelectProduct,
+  wishlistItems = [],
+  onToggleWishlist
+}: Props) {
+  const [showMore, setShowMore] = useState(false);
+
+  // Reset showMore toggled whenever the collection category changes
+  useEffect(() => {
+    setShowMore(false);
+  }, [activeCollection, activeCategoryFilter]);
+
   const query = searchQuery.trim().toLowerCase();
 
-  // Filter products by the chosen collection or search query
+  // Filter products by the chosen collection, search query, and sunglasses vs glasses activeCategoryFilter
   const filteredProducts = productsData.filter((p) => {
+    // 1. Search filter
     if (query) {
-      return p.name.toLowerCase().includes(query) || p.engName.toLowerCase().includes(query);
+      const matchesSearch = p.name.toLowerCase().includes(query) || p.engName.toLowerCase().includes(query);
+      if (!matchesSearch) return false;
+    }
+
+    // 2. Category filter
+    if (activeCollection !== "전체보기" && p.category !== activeCollection) {
+      return false;
     }
     if (activeCollection === "전체보기") {
-      return p.category !== "전통공예";
+      if (p.category === "전통공예") {
+        return false;
+      }
     }
-    return p.category === activeCollection;
+
+    // 3. Eyewear Type filter (sunglasses vs glasses)
+    if (activeCategoryFilter === "sunglasses" && p.type !== "sunglasses") {
+      return false;
+    }
+    if (activeCategoryFilter === "glasses" && p.type !== "glasses") {
+      return false;
+    }
+
+    return true;
   });
 
+  const isAllView = activeCollection === "전체보기" && !query;
+  const displayProducts = isAllView && !showMore
+    ? filteredProducts.slice(0, 4)
+    : filteredProducts;
+
+  const getCollectionTitle = () => {
+    let suffix = "전체 컬렉션";
+    if (activeCategoryFilter === "sunglasses") suffix = "선글라스";
+    if (activeCategoryFilter === "glasses") suffix = "안경";
+
+    if (activeCollection === "전체보기") {
+      return `2026 GENTLE MONSTER ${suffix}`;
+    }
+    return `${activeCollection} ${suffix}`;
+  };
+
+  const getCollectionDescription = () => {
+    let eyewearType = "컬렉션";
+    if (activeCategoryFilter === "sunglasses") eyewearType = "선글라스";
+    if (activeCategoryFilter === "glasses") eyewearType = "안경";
+
+    if (activeCollection === "전체보기") {
+      return `젠틀몬스터의 현대적인 디자인 문법과 한국 무형문화유산 장인들의 백년 전통 금속 세조 기법(주조•단조•입사•칠보)이 융합된 전체 ${eyewearType} 라인업을 통합 소개합니다.`;
+    }
+    if (activeCollection === "꽃 컬렉션") {
+      return `꽃 컬렉션 ${eyewearType}은 한국 야생화의 순수한 유기적인 곡선과 자연의 고유한 아름다움을 예술적 터치로 재해석한 프레임을 통해 우아함을 극대화한 아이웨어로 선보입니다.`;
+    }
+    if (activeCollection === "궁궐 컬렉션") {
+      return `궁궐 컬렉션 ${eyewearType}은 전통 기와지붕의 부드러운 유선 곡선과 전통 격자 조각을 모던 미니멀리즘 프레임에 조화시켜 시대에 없던 웅장하고 깊이 있는 아이웨어로 선보입니다.`;
+    }
+    if (activeCollection === "날개 컬렉션") {
+      return `날개 컬렉션 ${eyewearType}은 창공을 향해 거침없이 비상하는 날갯깃의 기류를 은빛 크롬과 기하학적 유선 프레임 디테일로 조각하여 완벽히 아방가르드한 스타일을 선보입니다.`;
+    }
+    if (activeCollection === "문양 컬렉션") {
+      return `문양 컬렉션 ${eyewearType}은 길상의 기운을 품는 당초문과 전통 원형 연화문 등 천상의 문채를 귀 금속 세공품 공정으로 재해석하여 섬세한 깊이감을 불어넣은 아이웨어로 선보입니다.`;
+    }
+    return "";
+  };
+
   return (
-    <section className="relative py-16 md:py-24 px-6 md:px-12 bg-white border-t border-black/5 overflow-hidden">
+    <section className="relative py-12 md:py-16 px-6 md:px-12 bg-[#fafafa] border-t border-black/5 overflow-hidden">
       
-      {/* Dynamic Collection Info Header */}
-      <div className="max-w-2xl mx-auto text-center mb-16 px-4">
+      {/* Dynamic Collection Info Header in style of Disney x F1 screenshot */}
+      <div className="max-w-3xl mx-auto text-center mb-10 md:mb-14 px-4 bg-[#fafafa]">
         <motion.div
-          key={query ? `search-${query}` : activeCollection}
+          key={query ? `search-${query}` : `${activeCollection}-${activeCategoryFilter}`}
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           {query ? (
             <>
-              <h2 className="font-serif text-2xl md:text-3xl mb-4 font-bold tracking-tight">
+              <h2 className="text-base md:text-lg font-bold tracking-tight text-neutral-900 mb-3.5 uppercase">
                 "{searchQuery}" 검색 결과
               </h2>
-              <p className="text-sm md:text-base leading-relaxed text-brand-ink/70 break-keep">
-                총 {filteredProducts.length}개의 정교한 수공예 메탈 프레임 제품을 찾았습니다.
+              <p className="text-xs md:text-[13px] font-medium leading-relaxed text-neutral-500 break-keep">
+                총 {filteredProducts.length}개의 정교한 수공예 메탈 프레임을 찾았습니다.
               </p>
             </>
           ) : (
             <>
-              <h2 className="font-serif text-2xl md:text-3xl mb-4 font-bold tracking-tight">
-                2026 {activeCollection === "전체보기" ? "전체 컬렉션" : activeCollection}
+              <h2 className="text-base md:text-[17px] font-extrabold tracking-[0.05em] text-neutral-900 mb-4 block uppercase font-sans">
+                {getCollectionTitle()}
               </h2>
-              <p className="text-sm md:text-base leading-relaxed text-brand-ink/70 break-keep">
-                {activeCollection === "전체보기" && 
-                  "젠틀몬스터의 실험적인 디자인 언어와 무형문화유산 장인들의 정교한 금속 기법(주조•단조•입사•칠보)이 융합된 전체 라인업을 소개합니다."}
-                {activeCollection === "꽃 컬렉션" && 
-                  "매화, 벚꽃, 연꽃, 국화의 여리지만 기품 있는 매력을 정교한 수공예 메탈 꽃 문양 조각으로 완성한 한정 레벨 피스."}
-                {activeCollection === "궁궐 컬렉션" && 
-                  "전통 기와지붕의 부드러운 곡선 미학(기와)과 아름다운 전통 창살 격자 격문(창호)을 웅장하고 미니멀한 블랙 프레임속에 조화시켰습니다."}
-                {activeCollection === "날개 컬렉션" && 
-                  "비상하는 날갯깃의 입체적인 바람 결을 금빛과 은빛 크롬의 경이로운 하이테크 유선형 구조로 재해석한 아방가르드 컬렉션."}
-                {activeCollection === "문양 컬렉션" && 
-                  "아름다운 전통 문양 속 길상의 의미를 담은 연화문, 당초문 및 삼태극 엠블럼 장인의 세밀한 손길로 제작된 디테일 프레임."}
+              <p className="text-xs md:text-[13px] leading-relaxed text-neutral-500 max-w-2xl mx-auto font-normal break-keep">
+                {getCollectionDescription()}
               </p>
             </>
           )}
@@ -86,7 +155,7 @@ export default function ProductGrid({ activeCollection, searchQuery = "" }: Prop
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10"
             >
               <AnimatePresence mode="popLayout">
-                {filteredProducts.map((p) => (
+                {displayProducts.map((p) => (
                   <motion.article
                     key={`front-${p.id}`}
                     layout
@@ -95,6 +164,7 @@ export default function ProductGrid({ activeCollection, searchQuery = "" }: Prop
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.45, ease: "easeOut" }}
                     className="flex flex-col group cursor-pointer"
+                    onClick={() => onSelectProduct && onSelectProduct(p)}
                   >
                     {/* Image / SVG Container on a beautiful premium gray background */}
                     <div className="h-[240px] w-full bg-[#f6f7f8] rounded-2xl flex items-center justify-center mb-5 relative overflow-hidden transition-all duration-300 hover:bg-[#ecedee]">
@@ -128,8 +198,22 @@ export default function ProductGrid({ activeCollection, searchQuery = "" }: Prop
                             {p.engName}
                           </p>
                         </div>
-                        <button className="p-1 hover:bg-black/5 rounded-full transition-colors group/heart">
-                          <Heart size={15} className="opacity-30 group-hover/heart:opacity-100 transition-opacity" />
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (onToggleWishlist) onToggleWishlist(p);
+                          }}
+                          className="p-1 hover:bg-black/5 rounded-full transition-colors group/heart cursor-pointer"
+                          title="위시리스트"
+                        >
+                          <Heart 
+                            size={15} 
+                            className={`transition-all duration-350 ${
+                              wishlistItems.some((w) => w.id === p.id) 
+                                ? "fill-neutral-900 text-neutral-900 opacity-100 scale-110" 
+                                : "opacity-30 group-hover/heart:opacity-100"
+                            }`} 
+                          />
                         </button>
                       </div>
                     </div>
@@ -152,7 +236,7 @@ export default function ProductGrid({ activeCollection, searchQuery = "" }: Prop
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10"
             >
               <AnimatePresence mode="popLayout">
-                {filteredProducts.map((p) => (
+                {displayProducts.map((p) => (
                   <motion.article
                     key={`side-${p.id}`}
                     layout
@@ -161,6 +245,7 @@ export default function ProductGrid({ activeCollection, searchQuery = "" }: Prop
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.45, ease: "easeOut" }}
                     className="flex flex-col group cursor-pointer"
+                    onClick={() => onSelectProduct && onSelectProduct(p)}
                   >
                     {/* Side Detail Container */}
                     <div className="h-[240px] w-full bg-[#f6f7f8] rounded-2xl flex items-center justify-center mb-5 relative overflow-hidden transition-all duration-300 hover:bg-[#ecedee]">
@@ -197,6 +282,17 @@ export default function ProductGrid({ activeCollection, searchQuery = "" }: Prop
               </AnimatePresence>
             </motion.div>
           </div>
+
+          {isAllView && !showMore && (
+            <div className="flex justify-center pt-8 pb-2">
+              <button
+                onClick={() => setShowMore(true)}
+                className="px-14 py-4 border border-[#111]/15 hover:border-brand-ink hover:bg-brand-ink hover:text-white text-[11px] font-extrabold tracking-[0.12em] text-[#111] transition-all duration-350 cursor-pointer shadow-xs rounded-xl active:scale-[0.98] uppercase font-sans"
+              >
+                전체 상품 확인하기 (Show All Products)
+              </button>
+            </div>
+          )}
         </div>
       )}
     </section>

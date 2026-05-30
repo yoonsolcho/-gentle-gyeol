@@ -5,6 +5,7 @@ export interface Product {
   price: string;
   category: "전통공예" | "꽃 컬렉션" | "궁궐 컬렉션" | "날개 컬렉션" | "문양 컬렉션";
   color: string;
+  type: "sunglasses" | "glasses";
   soldOut?: boolean;
   statusText?: string;
   hasTag?: string;
@@ -19,6 +20,7 @@ export const productsData: Product[] = [
     price: "₩420,000",
     category: "전통공예",
     color: "red",
+    type: "sunglasses",
   },
   {
     id: "craft-2",
@@ -27,6 +29,7 @@ export const productsData: Product[] = [
     price: "₩450,000",
     category: "전통공예",
     color: "navy",
+    type: "sunglasses",
   },
   {
     id: "craft-3",
@@ -35,6 +38,7 @@ export const productsData: Product[] = [
     price: "품절",
     category: "전통공예",
     color: "ivory",
+    type: "glasses",
     soldOut: true,
   },
   {
@@ -44,6 +48,7 @@ export const productsData: Product[] = [
     price: "₩320,000",
     category: "전통공예",
     color: "silver",
+    type: "glasses",
     statusText: "재입고 예정",
   },
 
@@ -55,6 +60,7 @@ export const productsData: Product[] = [
     price: "₩450,000",
     category: "꽃 컬렉션",
     color: "silver",
+    type: "sunglasses",
   },
   {
     id: "flower-2",
@@ -63,6 +69,7 @@ export const productsData: Product[] = [
     price: "₩450,000",
     category: "꽃 컬렉션",
     color: "rose",
+    type: "glasses",
   },
   {
     id: "flower-3",
@@ -71,6 +78,7 @@ export const productsData: Product[] = [
     price: "₩450,000",
     category: "꽃 컬렉션",
     color: "platinum",
+    type: "sunglasses",
   },
   {
     id: "flower-4",
@@ -79,6 +87,7 @@ export const productsData: Product[] = [
     price: "₩450,000",
     category: "꽃 컬렉션",
     color: "gold",
+    type: "glasses",
     soldOut: true,
     statusText: "품절",
   },
@@ -91,6 +100,7 @@ export const productsData: Product[] = [
     price: "₩400,000",
     category: "궁궐 컬렉션",
     color: "black",
+    type: "sunglasses",
   },
   {
     id: "palace-2",
@@ -99,6 +109,7 @@ export const productsData: Product[] = [
     price: "₩400,000",
     category: "궁궐 컬렉션",
     color: "matte-black",
+    type: "sunglasses",
   },
   {
     id: "palace-3",
@@ -107,6 +118,7 @@ export const productsData: Product[] = [
     price: "₩400,000",
     category: "궁궐 컬렉션",
     color: "gold-black",
+    type: "glasses",
   },
   {
     id: "palace-4",
@@ -115,6 +127,7 @@ export const productsData: Product[] = [
     price: "₩400,000",
     category: "궁궐 컬렉션",
     color: "translucent",
+    type: "glasses",
   },
 
   // 날개 컬렉션
@@ -125,6 +138,7 @@ export const productsData: Product[] = [
     price: "₩420,000",
     category: "날개 컬렉션",
     color: "monochrome",
+    type: "glasses",
   },
   {
     id: "wing-2",
@@ -133,6 +147,7 @@ export const productsData: Product[] = [
     price: "₩420,000",
     category: "날개 컬렉션",
     color: "chrome",
+    type: "sunglasses",
   },
   {
     id: "wing-3",
@@ -141,6 +156,7 @@ export const productsData: Product[] = [
     price: "₩420,000",
     category: "날개 컬렉션",
     color: "dark-wing",
+    type: "sunglasses",
   },
   {
     id: "wing-4",
@@ -149,6 +165,7 @@ export const productsData: Product[] = [
     price: "₩420,000",
     category: "날개 컬렉션",
     color: "titanium",
+    type: "glasses",
   },
 
   // 문양 컬렉션
@@ -159,6 +176,7 @@ export const productsData: Product[] = [
     price: "₩400,000",
     category: "문양 컬렉션",
     color: "classic-black",
+    type: "sunglasses",
   },
   {
     id: "pattern-2",
@@ -167,6 +185,7 @@ export const productsData: Product[] = [
     price: "₩400,000",
     category: "문양 컬렉션",
     color: "amber-gold",
+    type: "glasses",
   },
   {
     id: "pattern-3",
@@ -175,6 +194,7 @@ export const productsData: Product[] = [
     price: "₩400,000",
     category: "문양 컬렉션",
     color: "dark-grid",
+    type: "sunglasses",
   },
   {
     id: "pattern-4",
@@ -183,5 +203,6 @@ export const productsData: Product[] = [
     price: "₩400,000",
     category: "문양 컬렉션",
     color: "cream-taegeuk",
+    type: "glasses",
   },
 ];
