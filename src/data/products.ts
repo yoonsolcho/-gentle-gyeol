@@ -66,11 +66,11 @@ export const productsData: Product[] = [
     color: "silver",
     type: "sunglasses",
     images: {
-      thumbnail: "/assets/products/꽃/매화_대각선.png",
+      thumbnail: "/assets/products/꽃/매화/매화_대각선.png",
       detail: [
-        "/assets/products/꽃/매화_대각선.png",
-        "/assets/products/꽃/매화_정면.png",
-        "/assets/products/꽃/매화_측면.png",
+        "/assets/products/꽃/매화/매화_대각선.png",
+        "/assets/products/꽃/매화/매화_정면.png",
+        "/assets/products/꽃/매화/매화_측면.png",
         "/assets/products/꽃/매화/매화_제품상세컷2.jpeg"
       ]
     }
@@ -100,6 +100,14 @@ export const productsData: Product[] = [
     category: "꽃 컬렉션",
     color: "platinum",
     type: "sunglasses",
+    images: {
+      thumbnail: "/assets/products/꽃/연꽃/연꽃_대각선.png",
+      detail: [
+        "/assets/products/꽃/연꽃/연꽃_대각선.png",
+        "/assets/products/꽃/연꽃/연꽃_정면.png",
+        "/assets/products/꽃/연꽃/연꽃_측면.png"
+      ]
+    }
   },
   {
     id: "flower-4",

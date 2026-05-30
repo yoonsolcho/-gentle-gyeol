@@ -41,7 +41,7 @@ function ProductCard({
     >
       {/* Image / SVG Container on a beautiful premium gray background */}
       <div className={`h-[240px] w-full rounded-2xl flex items-center justify-center mb-5 relative overflow-hidden transition-all duration-300 ${
-        p.id === "flower-1" || p.id === "flower-2" ? "bg-[#ffffff]" : 
+        p.id === "flower-1" || p.id === "flower-2" || p.id === "flower-3" ? "bg-[#ffffff]" : 
         "bg-[#f6f7f8] hover:bg-[#ecedee]"
       }`}>
         {/* Clean soft shadow beneath glasses inside display box */}
