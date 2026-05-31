@@ -155,6 +155,14 @@ export const productsData: Product[] = [
     category: "궁궐 컬렉션",
     color: "matte-black",
     type: "sunglasses",
+    images: {
+      thumbnail: "/assets/products/궁궐/창호/창호_대각선-1.jpeg",
+      detail: [
+        "/assets/products/궁궐/창호/창호_대각선-1.jpeg",
+        "/assets/products/궁궐/창호/창호_정면-1.png",
+        "/assets/products/궁궐/창호/창호_측면-1.png"
+      ]
+    }
   },
   {
     id: "palace-3",
@@ -173,6 +181,14 @@ export const productsData: Product[] = [
     category: "궁궐 컬렉션",
     color: "translucent",
     type: "glasses",
+    images: {
+      thumbnail: "/assets/products/궁궐/단청/단청_대각선-1.png",
+      detail: [
+        "/assets/products/궁궐/단청/단청_대각선-1.png",
+        "/assets/products/궁궐/단청/단청_정면-1.png",
+        "/assets/products/궁궐/단청/단청_측면-1.png"
+      ]
+    }
   },
 
   // 날개 컬렉션
@@ -185,9 +201,9 @@ export const productsData: Product[] = [
     color: "monochrome",
     type: "glasses",
     images: {
-      thumbnail: "/assets/products/날개/비상/비상_대각선-1.png",
+      thumbnail: "/assets/products/날개/비상/비상_대각선.png",
       detail: [
-        "/assets/products/날개/비상/비상_대각선-1.png",
+        "/assets/products/날개/비상/비상_대각선.png",
         "/assets/products/날개/비상/비상_정면.jpeg",
         "/assets/products/날개/비상/비상_측면-1.png"
       ]
@@ -219,6 +235,14 @@ export const productsData: Product[] = [
     category: "날개 컬렉션",
     color: "titanium",
     type: "glasses",
+    images: {
+      thumbnail: "/assets/products/날개/바람/바람_대각선-1.png",
+      detail: [
+        "/assets/products/날개/바람/바람_대각선-1.png",
+        "/assets/products/날개/바람/바람_정면.jpeg",
+        "/assets/products/날개/바람/바람_측면-1.png"
+      ]
+    }
   },
 
   // 문양 컬렉션
@@ -230,6 +254,14 @@ export const productsData: Product[] = [
     category: "문양 컬렉션",
     color: "classic-black",
     type: "sunglasses",
+    images: {
+      thumbnail: "/assets/products/문양/연화문/연화문_대각선-1.png",
+      detail: [
+        "/assets/products/문양/연화문/연화문_대각선-1.png",
+        "/assets/products/문양/연화문/연화문_정면-1.png",
+        "/assets/products/문양/연화문/연화문_측면-1.png"
+      ]
+    }
   },
   {
     id: "pattern-2",
@@ -239,6 +271,14 @@ export const productsData: Product[] = [
     category: "문양 컬렉션",
     color: "amber-gold",
     type: "glasses",
+    images: {
+      thumbnail: "/assets/products/문양/당초문/당초문_대각선-1.png",
+      detail: [
+        "/assets/products/문양/당초문/당초문_대각선-1.png",
+        "/assets/products/문양/당초문/당초문_정면-1.png",
+        "/assets/products/문양/당초문/당초문_측면-1.png"
+      ]
+    }
   },
   {
     id: "pattern-3",

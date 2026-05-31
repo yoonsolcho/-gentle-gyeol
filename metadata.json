@@ -2,5 +2,7 @@
   "name": "Remix: GENTLE - 결",
   "description": "A luxury eyewear collection blending modern silhouettes with Korean traditional craftsmanship.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
