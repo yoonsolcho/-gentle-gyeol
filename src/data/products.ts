@@ -217,6 +217,14 @@ export const productsData: Product[] = [
     category: "날개 컬렉션",
     color: "chrome",
     type: "sunglasses",
+    images: {
+      thumbnail: "/assets/products/날개/천공/천공_대각선-1.png",
+      detail: [
+        "/assets/products/날개/천공/천공_대각선-1.png",
+        "/assets/products/날개/천공/천공_정면-1.png",
+        "/assets/products/날개/천공/천공_측면-1.png"
+      ]
+    }
   },
   {
     id: "wing-3",
