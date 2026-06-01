@@ -76,26 +76,9 @@ export const productsData: Product[] = [
     }
   },
   {
-    id: "flower-2",
-    name: "벚꽃 02",
-    engName: "BEOTKKOT 02",
-    price: "₩450,000",
-    category: "꽃 컬렉션",
-    color: "rose",
-    type: "glasses",
-    images: {
-      thumbnail: "/assets/products/꽃/벚꽃/벚꽃_대각선.png",
-      detail: [
-        "/assets/products/꽃/벚꽃/벚꽃_대각선.png",
-        "/assets/products/꽃/벚꽃/벚꽃_정면.png",
-        "/assets/products/꽃/벚꽃/벚꽃_측면.png"
-      ]
-    }
-  },
-  {
     id: "flower-3",
-    name: "연꽃 03",
-    engName: "YEONLOT 03",
+    name: "연꽃 02",
+    engName: "YEONLOT 02",
     price: "₩450,000",
     category: "꽃 컬렉션",
     color: "platinum",
@@ -111,8 +94,8 @@ export const productsData: Product[] = [
   },
   {
     id: "flower-4",
-    name: "국화 04",
-    engName: "GUKHWA 04",
+    name: "국화 03",
+    engName: "GUKHWA 03",
     price: "₩450,000",
     category: "꽃 컬렉션",
     color: "gold",

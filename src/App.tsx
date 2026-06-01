@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import CollectionChips from './components/CollectionChips';
 import Hero from './components/Hero';
@@ -22,6 +22,43 @@ export default function App() {
   const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartActiveTab, setCartActiveTab] = useState<'cart' | 'wishlist'>('cart');
+
+  // Background Image Preloading Optimization
+  useEffect(() => {
+    const imagesToPreload = [
+      // Crucial Fallbacks & Story Media
+      '/assets/products/꽃/매화/매화_제품상세컷2.jpeg',
+      '/assets/sections/hero_bg.jpeg',
+      
+      // Product Thumbnail Assets across all collections for instanced rendering
+      '/assets/products/꽃/매화/매화_대각선.png',
+      '/assets/products/꽃/연꽃/연꽃_대각선.png',
+      '/assets/products/꽃/국화/국화_대각선-1.png',
+      '/assets/products/궁궐/기와/기와_대각선-1.png',
+      '/assets/products/궁궐/창호/창호_대각선-1.jpeg',
+      '/assets/products/궁궐/단청/단청_대각선-1.png',
+      '/assets/products/날개/비상/비상_대각선.png',
+      '/assets/products/날개/천공/천공_대각선-1.png',
+      '/assets/products/날개/바람/바람_대각선-1.png',
+      '/assets/products/문양/연화문/연화문_대각선-1.png',
+      '/assets/products/문양/당초문/당초문_대각선-1.png',
+      '/assets/products/문양/격자문/격자문_대각선.png'
+    ];
+
+    const preloadAll = () => {
+      imagesToPreload.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    };
+
+    // Use requestIdleCallback if available, fallback to passive setTimeout
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(() => preloadAll());
+    } else {
+      setTimeout(preloadAll, 800);
+    }
+  }, []);
 
   const handleNavigate = (newView: 'home' | 'story' | 'store') => {
     setView(newView);
