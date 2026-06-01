@@ -1,7 +1,31 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { X, Trash2, Heart, ShoppingBag, ArrowRight } from 'lucide-react';
 import { Product } from '../data/products';
 import GlassesRenderer from './GlassesRenderer';
+
+// Helper component to render cart product images safely with error fallback
+function CartProductImage({ product, className }: { product: Product; className?: string }) {
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [product.id]);
+
+  if (product.images?.thumbnail && !hasError) {
+    return (
+      <img
+        src={product.images.thumbnail}
+        alt={product.name}
+        className={className || "w-full h-full object-contain p-0"}
+        referrerPolicy="no-referrer"
+        onError={() => setHasError(true)}
+      />
+    );
+  }
+
+  return <GlassesRenderer id={product.id} viewType="front" />;
+}
 
 export interface CartItem {
   product: Product;
@@ -168,16 +192,7 @@ export default function CartModal({
                       }}
                       className="w-28 h-16 bg-neutral-50 hover:bg-neutral-100 rounded-xl flex items-center justify-center p-1.5 shrink-0 border border-black/5 cursor-pointer relative"
                     >
-                      {item.product.images?.thumbnail ? (
-                        <img 
-                          src={item.product.images.thumbnail} 
-                          alt={item.product.name} 
-                          className="w-full h-full object-contain p-0"
-                          referrerPolicy="no-referrer"
-                        />
-                      ) : (
-                        <GlassesRenderer id={item.product.id} viewType="front" />
-                      )}
+                      <CartProductImage product={item.product} />
                     </div>
 
                     {/* Metadata summary */}
@@ -338,16 +353,7 @@ export default function CartModal({
                     }}
                     className="w-24 h-16 bg-neutral-50 hover:bg-neutral-100 rounded-xl flex items-center justify-center p-1 border border-black/5 cursor-pointer shrink-0"
                   >
-                    {prod.images?.thumbnail ? (
-                      <img 
-                        src={prod.images.thumbnail} 
-                        alt={prod.name} 
-                        className="w-full h-full object-contain p-0"
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <GlassesRenderer id={prod.id} viewType="front" />
-                    )}
+                    <CartProductImage product={prod} />
                   </div>
 
                   {/* Details metadata */}

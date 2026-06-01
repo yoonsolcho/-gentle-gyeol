@@ -81,7 +81,7 @@ export default function GlassesRenderer({ id, viewType = "front" }: Props) {
     let frameColor = "#1a1c1f"; // Default acetate
     let frameStroke = "#2e3136";
 
-    if (id === "wing-1" || id === "wing-4" || id === "craft-4") lensColor = "url(#lens-light)";
+    if (id === "wing-1" || id === "wing-3" || id === "craft-4") lensColor = "url(#lens-light)";
     if (id === "pattern-2" || id === "craft-3") lensColor = "url(#lens-amber)";
 
     // Flower models: flower-1 & flower-3 are dark sunglasses, flower-2 & flower-4 are light-lens glasses
@@ -95,9 +95,8 @@ export default function GlassesRenderer({ id, viewType = "front" }: Props) {
     } else {
       if (id === "pattern-2") metalColor = "url(#gold)";
     }
-    if (id === "palace-4") frameColor = "rgba(205, 215, 224, 0.45)"; // Translucent clear
+    if (id === "palace-3") frameColor = "rgba(205, 215, 224, 0.45)"; // Translucent clear
     if (id === "pattern-2") frameColor = "rgba(225, 170, 95, 0.45)"; // Honey amber
-    if (id === "pattern-4") frameColor = "#fbf7ed"; // Cream white
     if (id === "craft-1") frameColor = "#b9161d"; // Red
     if (id === "craft-2") frameColor = "#16183d"; // Navy
 
@@ -212,7 +211,7 @@ export default function GlassesRenderer({ id, viewType = "front" }: Props) {
                 <path d="M 64 74 C 64 48, 144 48, 150 74 C 150 102, 64 102, 64 74 Z" stroke={metalColor} strokeWidth="2.2" />
                 <path d="M 175 72 C 175 49, 241 49, 247 72 C 247 96, 175 96, 175 72 Z" stroke={metalColor} strokeWidth="1.8" />
                 <path d="M 148 74 Q 163 64, 178 72" stroke={metalColor} strokeWidth="3" strokeLinecap="round" />
-                {id === "wing-4" && <path d="M 150 70 Q 163 60, 176 68" stroke={metalColor} strokeWidth="1.8" />}
+                {id === "wing-3" && <path d="M 150 70 Q 163 60, 176 68" stroke={metalColor} strokeWidth="1.8" />}
               </>
             )}
           </>
@@ -327,16 +326,7 @@ export default function GlassesRenderer({ id, viewType = "front" }: Props) {
           </g>
         )}
 
-        {id === "palace-3" && ( // 문양: Round golden seal on hinge
-          <g transform="translate(42, 80)">
-            <circle cx="0" cy="0" r="6" fill="url(#gold)" stroke="#74551d" strokeWidth="0.8" />
-            <line x1="-3" y1="0" x2="3" y2="0" stroke="#111" strokeWidth="0.8" />
-            <line x1="0" y1="-3" x2="0" y2="3" stroke="#111" strokeWidth="0.8" />
-            <circle cx="0" cy="0" r="1.5" fill="#fff" />
-          </g>
-        )}
-
-        {id === "palace-4" && ( // 단청: Delicate small crimson and forest-green glaze beads inside transparency
+        {id === "palace-3" && ( // 단청: Delicate small crimson and forest-green glaze beads inside transparency
           <g transform="translate(38, 70)">
             <circle cx="0" cy="0" r="2.2" fill="#e03e3e" />
             <circle cx="3.2" cy="-3.5" r="2.2" fill="#249c6b" />
@@ -346,8 +336,8 @@ export default function GlassesRenderer({ id, viewType = "front" }: Props) {
 
         {isWing && ( // 날개 깃: Overlapping styled feather wings blowing back from temples
           <g transform="translate(56, 73)" opacity="0.95">
-            <path d="M 0 0 C -12 -12, -26 -14, -26 -3 C -26 5, -16 6, -2 2 Z" fill={id === "wing-3" ? "#111" : "url(#silver)"} stroke="#6c6d70" strokeWidth="0.5" />
-            <path d="M -3 3 C -18 -6, -30 -4, -28 6 C -26 11, -16 10, -5 4 Z" fill={id === "wing-3" ? "#111" : "url(#silver)"} stroke="#6c6d70" strokeWidth="0.5" />
+            <path d="M 0 0 C -12 -12, -26 -14, -26 -3 C -26 5, -16 6, -2 2 Z" fill="url(#silver)" stroke="#6c6d70" strokeWidth="0.5" />
+            <path d="M -3 3 C -18 -6, -30 -4, -28 6 C -26 11, -16 10, -5 4 Z" fill="url(#silver)" stroke="#6c6d70" strokeWidth="0.5" />
             {id === "wing-2" && <path d="M -6 6 L -42 -5 L -2 7" fill="url(#silver)" />}
           </g>
         )}
@@ -375,15 +365,6 @@ export default function GlassesRenderer({ id, viewType = "front" }: Props) {
             <line x1="18" y1="0" x2="18" y2="11" stroke="url(#silver)" strokeWidth="0.8" />
             <line x1="27" y1="0" x2="27" y2="11" stroke="url(#silver)" strokeWidth="0.8" />
             <line x1="0" y1="5.5" x2="34" y2="5.5" stroke="url(#silver)" strokeWidth="0.8" />
-          </g>
-        )}
-
-        {id === "pattern-4" && ( // 삼태극: Round emblem with Red, Blue, Yellow enamel swirl
-          <g transform="translate(38, 80)">
-            <circle cx="0" cy="0" r="7.5" fill="#111" stroke="#dad2be" strokeWidth="0.8" />
-            <path d="M 0 0 A 7.5 7.5 0 0 1 7.5 0 A 3.75 3.75 0 0 1 3.75 3.75 A 3.75 3.75 0 0 0 0 0 Z" fill="#ffcd00" />
-            <path d="M 0 0 A 7.5 7.5 0 0 1 -3.75 6.5 A 3.75 3.75 0 0 1 -5.1 -1.8 A 3.75 3.75 0 0 0 0 0 Z" fill="#0047a0" />
-            <path d="M 0 0 A 7.5 7.5 0 0 1 -3.75 -6.5 A 3.75 3.75 0 0 1 1.4 -3.7 A 3.75 3.75 0 0 0 0 0 Z" fill="#cd2e3a" />
           </g>
         )}
 
@@ -415,9 +396,8 @@ export default function GlassesRenderer({ id, viewType = "front" }: Props) {
     } else {
       if (id === "pattern-2") coreColor = "url(#gold)";
     }
-    if (id === "palace-4") armColor = "rgba(205, 215, 224, 0.4)";
+    if (id === "palace-3") armColor = "rgba(205, 215, 224, 0.4)";
     if (id === "pattern-2") armColor = "rgba(225, 170, 95, 0.45)";
-    if (id === "pattern-4") armColor = "#fbf7ed";
     if (id === "craft-1") armColor = "#b9161d";
     if (id === "craft-2") armColor = "#16183d";
 
@@ -605,19 +585,8 @@ export default function GlassesRenderer({ id, viewType = "front" }: Props) {
           </g>
         )}
 
-        {/* palace-3: Engraved gold concentric medallion seal (Munyang) */}
+        {/* palace-3: Internal pattern silver skeleton wire and brightly painted Dancheong dots */}
         {id === "palace-3" && (
-          <g transform="translate(150, 82) scale(1.4)">
-            <circle cx="0" cy="0" r="9.5" fill="url(#gold)" stroke="#74551d" strokeWidth="1" />
-            <circle cx="0" cy="0" r="6" fill="none" stroke="#222" strokeWidth="0.6" />
-            <line x1="-5.5" y1="0" x2="5.5" y2="0" stroke="#111" strokeWidth="1" />
-            <line x1="0" y1="-5.5" x2="0" y2="5.5" stroke="#111" strokeWidth="1" />
-            <circle cx="0" cy="0" r="2" fill="#fff" />
-          </g>
-        )}
-
-        {/* palace-4: Internal pattern silver skeleton wire and brightly painted Dancheong dots */}
-        {id === "palace-4" && (
           <g>
             <path d="M 60 82 H 240" stroke="url(#silver)" strokeWidth="3.5" strokeLinecap="round" />
             <line x1="80" y1="78" x2="80" y2="86" stroke="#222" strokeWidth="1" />
@@ -652,18 +621,8 @@ export default function GlassesRenderer({ id, viewType = "front" }: Props) {
           </g>
         )}
 
-        {/* wing-3: Pitch black matte bird feather segments with mesh vents */}
+        {/* wing-3: Streamlined parallel wind turbine silver wire curves */}
         {id === "wing-3" && (
-          <g transform="translate(130, 80) scale(1.3)">
-            <path d="M -20 -8 C -35 -12, -42 2, -38 12 Q -20 18, -2 4 Z" fill="#181a1d" stroke="#333" strokeWidth="1" />
-            <path d="M 15 -8 C 0 -12, -7 2, -3 12 Q 15 18, 33 4 Z" fill="#181a1d" stroke="#333" strokeWidth="1" />
-            <line x1="-15" y1="0" x2="-25" y2="4" stroke="#555" strokeWidth="1" />
-            <line x1="20" y1="0" x2="10" y2="4" stroke="#555" strokeWidth="1" />
-          </g>
-        )}
-
-        {/* wing-4: Streamlined parallel wind turbine silver wire curves */}
-        {id === "wing-4" && (
           <g transform="translate(140, 80) scale(1.3)">
             <path d="M -40 -6 Q 0 -15, 40 -6" stroke="url(#silver)" strokeWidth="2" strokeLinecap="round" />
             <path d="M -40 2 Q 0 -7, 40 2" stroke="url(#silver)" strokeWidth="1.5" strokeLinecap="round" />

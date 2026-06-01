@@ -29,6 +29,13 @@ function ProductCard({
   onToggleWishlist?: (p: Product) => void;
 }) {
   const p = product;
+  const [imageError, setImageError] = useState(false);
+
+  // Reset error state if product ID changes
+  useEffect(() => {
+    setImageError(false);
+  }, [p.id]);
+
   return (
     <motion.article
       layout
@@ -45,12 +52,13 @@ function ProductCard({
         <div className="absolute w-[60%] h-4 bottom-8 bg-black/[0.03] blur-lg rounded-full" />
         
         {/* Render the realistic representation (image file or fallback SVG) */}
-        {p.images?.thumbnail ? (
+        {p.images?.thumbnail && !imageError ? (
           <img 
             src={p.images.thumbnail} 
             alt={p.name} 
             className="w-full h-full object-contain p-0 group-hover:scale-105 transition-transform duration-500 ease-out" 
             referrerPolicy="no-referrer"
+            onError={() => setImageError(true)}
           />
         ) : (
           <GlassesRenderer id={p.id} viewType="front" />

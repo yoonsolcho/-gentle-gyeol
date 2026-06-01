@@ -64,6 +64,52 @@ const defaultColors: ColorOption[] = [
   { id: "standard-gold", name: "오레 골드 / 리치", classes: "bg-gradient-to-r from-amber-400 via-yellow-100 to-amber-600", desc: "천 년 동안 변치 않는 유물의 영롱한 빛" }
 ];
 
+// Helper sub-component to render thumbnail buttons with reliable loading fallback
+function ThumbnailButton({
+  imgUrl,
+  index,
+  isActive,
+  onClick,
+}: {
+  key?: number;
+  imgUrl: string;
+  index: number;
+  isActive: boolean;
+  onClick: () => void;
+}) {
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [imgUrl]);
+
+  return (
+    <button
+      onClick={onClick}
+      className={`w-14 h-14 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer relative bg-white flex items-center justify-center ${
+        isActive 
+          ? "opacity-100 scale-105 ring-2 ring-neutral-900 ring-offset-1 shadow-md" 
+          : "opacity-50 hover:opacity-80"
+      }`}
+    >
+      {!hasError ? (
+        <img 
+          src={imgUrl} 
+          alt={`View ${index + 1}`} 
+          className="w-full h-full object-contain p-1"
+          referrerPolicy="no-referrer"
+          onError={() => setHasError(true)}
+        />
+      ) : (
+        <div className="text-[10px] font-extrabold text-neutral-500 uppercase flex flex-col items-center leading-none">
+          <span className="text-[7px] text-neutral-400 font-mono tracking-wider mb-0.5">VIEW</span>
+          <span>{index === 0 ? "대각" : index === 1 ? "정면" : index === 2 ? "측면" : `#${index + 1}`}</span>
+        </div>
+      )}
+    </button>
+  );
+}
+
 export default function ProductDetail({ 
   product, 
   onBack, 
@@ -76,11 +122,18 @@ export default function ProductDetail({
   const [activeTab, setActiveTab] = useState<"detail" | "preorder" | "shipping">("detail");
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [imageLoadError, setImageLoadError] = useState(false);
 
   // Reset active image index on product change
   useEffect(() => {
     setActiveImageIndex(0);
+    setImageLoadError(false);
   }, [product.id]);
+
+  // Reset image error state when active image index changes
+  useEffect(() => {
+    setImageLoadError(false);
+  }, [activeImageIndex]);
   const isBookmarked = wishlistItems.some(w => w.id === product.id);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState<{ sender: "user" | "bot"; text: string }[]>([
@@ -250,34 +303,35 @@ export default function ProductDetail({
                     transition={{ duration: 0.35 }}
                     className="flex-1 flex justify-center items-center w-full max-w-[560px] h-[285px] md:h-[355px] mb-6"
                   >
-                    <img 
-                      src={product.images.detail[activeImageIndex]} 
-                      alt={`${product.name} - ${activeImageIndex + 1}`}
-                      className="max-w-full max-h-full object-contain"
-                      referrerPolicy="no-referrer"
-                    />
+                    {!imageLoadError ? (
+                      <img 
+                        src={product.images.detail[activeImageIndex]} 
+                        alt={`${product.name} - ${activeImageIndex + 1}`}
+                        className="max-w-full max-h-full object-contain"
+                        referrerPolicy="no-referrer"
+                        onError={() => setImageLoadError(true)}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex flex-col justify-center items-center scale-110">
+                        <GlassesRenderer 
+                          id={product.id} 
+                          viewType={activeImageIndex === 1 ? "front" : activeImageIndex === 2 ? "side" : "front"} 
+                        />
+                      </div>
+                    )}
                   </motion.div>
 
                   {/* Elegant Thumbnails slider */}
                   <div className="flex gap-3 justify-center z-10">
                     {product.images.detail.map((imgUrl, i) => {
                       return (
-                        <button
+                        <ThumbnailButton
                           key={i}
+                          imgUrl={imgUrl}
+                          index={i}
+                          isActive={activeImageIndex === i}
                           onClick={() => setActiveImageIndex(i)}
-                          className={`w-14 h-14 rounded-lg overflow-hidden transition-all duration-300 cursor-pointer relative ${
-                            activeImageIndex === i 
-                              ? "opacity-100 scale-105 ring-2 ring-neutral-900 ring-offset-1 shadow-md" 
-                              : "opacity-50 hover:opacity-80"
-                          }`}
-                        >
-                          <img 
-                            src={imgUrl} 
-                            alt={`View ${i + 1}`} 
-                            className="w-full h-full object-contain p-1 bg-white"
-                            referrerPolicy="no-referrer"
-                          />
-                        </button>
+                        />
                       );
                     })}
                   </div>

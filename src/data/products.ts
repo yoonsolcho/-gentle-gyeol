@@ -166,17 +166,8 @@ export const productsData: Product[] = [
   },
   {
     id: "palace-3",
-    name: "문양 03",
-    engName: "MUNYANG 03",
-    price: "₩400,000",
-    category: "궁궐 컬렉션",
-    color: "gold-black",
-    type: "glasses",
-  },
-  {
-    id: "palace-4",
-    name: "단청 04",
-    engName: "DANCHEONG 04",
+    name: "단청 03",
+    engName: "DANCHEONG 03",
     price: "₩400,000",
     category: "궁궐 컬렉션",
     color: "translucent",
@@ -228,17 +219,8 @@ export const productsData: Product[] = [
   },
   {
     id: "wing-3",
-    name: "신의 03",
-    engName: "SINUI 03",
-    price: "₩420,000",
-    category: "날개 컬렉션",
-    color: "dark-wing",
-    type: "sunglasses",
-  },
-  {
-    id: "wing-4",
-    name: "바람 04",
-    engName: "BARAM 04",
+    name: "바람 03",
+    engName: "BARAM 03",
     price: "₩420,000",
     category: "날개 컬렉션",
     color: "titanium",
@@ -296,14 +278,13 @@ export const productsData: Product[] = [
     category: "문양 컬렉션",
     color: "dark-grid",
     type: "sunglasses",
-  },
-  {
-    id: "pattern-4",
-    name: "삼태극문 04",
-    engName: "SAMTAEGUKMUN 04",
-    price: "₩400,000",
-    category: "문양 컬렉션",
-    color: "cream-taegeuk",
-    type: "glasses",
+    images: {
+      thumbnail: "/assets/products/문양/격자문/격자문_대각선.png",
+      detail: [
+        "/assets/products/문양/격자문/격자문_대각선.png",
+        "/assets/products/문양/격자문/격자문_정면.png",
+        "/assets/products/문양/격자문/격자문_측면.png"
+      ]
+    }
   },
 ];

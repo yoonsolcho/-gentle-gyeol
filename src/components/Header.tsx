@@ -162,7 +162,7 @@ export default function Header({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          GENTLE MONSTER
+          결의 시선
         </motion.span>
       </button>
 
