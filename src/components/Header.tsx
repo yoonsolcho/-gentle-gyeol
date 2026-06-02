@@ -155,12 +155,13 @@ export default function Header({
             onChangeView('home');
           }
         }}
-        className="absolute left-1/2 -translate-x-1/2 font-sans text-[10px] sm:text-xs md:text-sm lg:text-base font-extrabold tracking-[0.1em] sm:tracking-[0.2em] lg:tracking-[0.25em] uppercase whitespace-nowrap cursor-pointer hover:opacity-75 transition-opacity text-neutral-950"
+        className="absolute left-1/2 -translate-x-1/2 font-serif text-[11px] sm:text-sm md:text-base lg:text-lg font-semibold tracking-[0.05em] sm:tracking-[0.1em] lg:tracking-[0.15em] uppercase whitespace-nowrap cursor-pointer hover:opacity-75 transition-opacity text-neutral-950"
       >
         <motion.span
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
+          style={{ fontFamily: "'Cormorant Garamond', serif" }}
         >
           결의 시선
         </motion.span>

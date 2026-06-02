@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, Phone, Clock, Search, Navigation, Compass, Globe, CheckCircle, ChevronRight, CornerDownRight, X, ArrowLeft } from 'lucide-react';
 import L from 'leaflet';
@@ -132,14 +132,16 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
   const mapRef = useRef<L.Map | null>(null);
   const markersRef = useRef<Record<string, L.Marker>>({});
 
-  // Filter computation
-  const filteredStores = STORES_DATA.filter(store => {
-    const matchesFilter = filterType === 'all' || store.category === filterType;
-    const matchesQuery = store.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         store.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         store.theme.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesQuery;
-  });
+  // Filter computation (memoized to keep reference stable and prevent leaflet lag)
+  const filteredStores = useMemo(() => {
+    return STORES_DATA.filter(store => {
+      const matchesFilter = filterType === 'all' || store.category === filterType;
+      const matchesQuery = store.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                           store.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           store.theme.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesFilter && matchesQuery;
+    });
+  }, [filterType, searchQuery]);
 
   // Initialize Map
   useEffect(() => {
@@ -231,7 +233,7 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
 
       // Bind dynamic high-end minimalist popup
       marker.bindTooltip(`
-        <div class="px-2 py-1 bg-black text-white rounded text-[11px] font-bold font-sans tracking-wide">
+        <div class="px-2.5 py-1.5 bg-[#111111] text-white border border-white/20 text-[10px] font-bold font-sans tracking-wider">
           ${store.name}
         </div>
       `, {
@@ -264,152 +266,173 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
   };
 
   return (
-    <div className="bg-brand-bg min-h-screen pt-[48px] text-brand-ink font-sans relative">
+    <div className="bg-[#f4f4f5] min-h-screen pt-[48px] text-brand-ink font-sans relative">
       
       {/* 1. Header Navigation and Interactive Mode Selection */}
-      <div className="bg-brand-bg border-b border-black/5 px-6 md:px-12 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-b border-black/10 px-6 md:px-12 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm relative z-20">
         <div className="flex items-center gap-4">
           <button 
             onClick={onBack}
-            className="group p-2 -ml-2 rounded-full hover:bg-neutral-100 flex items-center justify-center text-neutral-500 hover:text-[#111] transition-all cursor-pointer"
+            className="group p-2.5 -ml-2 rounded-full hover:bg-black/5 flex items-center justify-center text-neutral-500 hover:text-black transition-all cursor-pointer border border-transparent hover:border-black/5"
             aria-label="뒤로가기"
           >
-            <ArrowLeft size={18} strokeWidth={2.4} />
+            <ArrowLeft className="group-hover:-translate-x-1 transition-transform" size={16} strokeWidth={2.5} />
           </button>
           
-          <div className="h-4 w-[1px] bg-neutral-200" />
+          <div className="h-5 w-[1px] bg-black/15" />
           
-          <div>
-            <h1 className="text-sm font-extrabold tracking-tight text-neutral-900 block uppercase">
+          <div className="flex flex-col">
+            <h1 className="text-[13px] font-extrabold tracking-[0.05em] text-neutral-900 uppercase">
               오프라인 스토어 위치 안내
             </h1>
           </div>
         </div>
 
-        {/* Dynamic Category Tabs */}
-        <div className="flex items-center gap-1 bg-neutral-200/50 p-1 rounded-xl w-fit self-end md:self-auto">
+        {/* Dynamic Category Tabs: Elegant Premium Labels with delicate bottom slide borders */}
+        <div className="flex items-center gap-8 border-b border-transparent">
           <button
             onClick={() => setFilterType('all')}
-            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+            className={`pb-1 text-xs tracking-widest transition-all cursor-pointer font-sans font-bold relative ${
               filterType === 'all' 
-                ? 'bg-black text-white shadow-sm' 
-                : 'text-neutral-500 hover:text-black hover:bg-neutral-200/30'
+                ? 'text-brand-ink' 
+                : 'text-neutral-400 hover:text-brand-ink'
             }`}
           >
-            전체
+            전체 ({STORES_DATA.length})
+            {filterType === 'all' && (
+              <motion.div layoutId="tabLine" className="absolute bottom-0 left-0 right-0 h-[3px] bg-amber-800" />
+            )}
           </button>
           <button
             onClick={() => setFilterType('domestic')}
-            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+            className={`pb-1 text-xs tracking-widest transition-all cursor-pointer font-sans font-bold relative ${
               filterType === 'domestic' 
-                ? 'bg-black text-white shadow-sm' 
-                : 'text-neutral-500 hover:text-black hover:bg-neutral-200/30'
+                ? 'text-brand-ink' 
+                : 'text-neutral-400 hover:text-brand-ink'
             }`}
           >
             국내 ({STORES_DATA.filter(s => s.category === 'domestic').length})
+            {filterType === 'domestic' && (
+              <motion.div layoutId="tabLine" className="absolute bottom-0 left-0 right-0 h-[3px] bg-amber-800" />
+            )}
           </button>
           <button
             onClick={() => setFilterType('global')}
-            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+            className={`pb-1 text-xs tracking-widest transition-all cursor-pointer font-sans font-bold relative ${
               filterType === 'global' 
-                ? 'bg-black text-white shadow-sm' 
-                : 'text-neutral-500 hover:text-black hover:bg-neutral-200/30'
+                ? 'text-brand-ink' 
+                : 'text-neutral-400 hover:text-brand-ink'
             }`}
           >
-            글로벌 ({STORES_DATA.filter(s => s.category === 'global').length})
+            해외 ({STORES_DATA.filter(s => s.category === 'global').length})
+            {filterType === 'global' && (
+              <motion.div layoutId="tabLine" className="absolute bottom-0 left-0 right-0 h-[3px] bg-amber-800" />
+            )}
           </button>
         </div>
       </div>
 
-      <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-96px)] items-stretch">
+      <div className="max-w-[1700px] mx-auto grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-100px)] items-stretch">
         
         {/* LEFT COLUMN: Store List & Search Panel (4 Columns) */}
-        <div className="lg:col-span-4 bg-brand-bg border-r border-black/5 flex flex-col py-6 px-4 md:px-6 h-[550px] lg:h-[calc(100vh-96px)] overflow-hidden justify-between">
-          <div className="flex flex-col gap-4 flex-1 overflow-hidden">
+        <div className="lg:col-span-4 bg-white border-r border-[#e4e4e7] flex flex-col py-6 px-6 h-[550px] lg:h-[calc(100vh-108px)] overflow-hidden justify-between">
+          <div className="flex flex-col gap-6 flex-1 overflow-hidden">
             
-            {/* Search Input Box */}
+            {/* Search Input Box - Seamless design with modern luxury look */}
             <div className="relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400" size={16} />
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400">
+                <Search size={14} strokeWidth={2.5} />
+              </div>
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="지점명 또는 대안 테마 검색..."
-                className="w-full bg-white hover:bg-neutral-50 text-xs text-brand-ink border border-black/5 rounded-xl pl-10 pr-4 py-3 placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-black/10 transition-all font-semibold shadow-xs"
+                placeholder="지점명 또는 공간 테마 검색..."
+                className="w-full bg-[#f4f4f5] text-xs text-brand-ink border border-neutral-200 rounded-none pl-9 pr-8 py-3 placeholder-neutral-400 focus:outline-none focus:border-black/50 focus:bg-white focus:shadow-inner transition-all font-semibold"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-black transition-colors"
                 >
                   <X size={14} />
                 </button>
               )}
             </div>
 
-            {/* Total count details */}
-            <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center justify-between border-b border-black/5 pb-2">
-              <span>STORES</span>
-              <span>{filteredStores.length} FOUND</span>
+            {/* Total count details with accent line */}
+            <div className="text-[10px] font-sans tracking-wider text-[#8a7a6b] flex items-center justify-between border-b border-black/10 pb-3">
+              <span className="flex items-center gap-1.5 font-bold">
+                <span className="inline-block w-1 h-1 bg-amber-800 rounded-full" />
+                공간 탐색
+              </span>
+              <span className="font-bold">{filteredStores.length}개의 공간 찾음</span>
             </div>
 
-            {/* List scrollbox container */}
-            <div className="flex flex-col gap-3 overflow-y-auto pr-1 flex-1 pb-4">
+            {/* List scrollbox container - Structured minimalist card hierarchy */}
+            <div className="flex flex-col gap-2.5 overflow-y-auto pr-1 flex-1 pb-4 no-scrollbar">
               {filteredStores.length === 0 ? (
-                <div className="p-8 text-center bg-white/50 border border-black/5 rounded-xl flex flex-col items-center justify-center gap-2">
-                  <Compass className="text-neutral-300 animate-spin" size={32} />
-                  <p className="text-xs font-semibold text-neutral-400 break-keep">
+                <div className="py-16 text-center flex flex-col items-center justify-center gap-3 bg-[#f8f9fa] border border-black/5">
+                  <Compass className="text-neutral-300 animate-spin" size={24} strokeWidth={1.5} />
+                  <p className="text-xs text-neutral-400 break-keep font-medium">
                     검색 결과와 매칭되는 스토어가 존재하지 않습니다.
                   </p>
                 </div>
               ) : (
-                filteredStores.map(store => {
+                filteredStores.map((store, i) => {
                   const isActive = store.id === activeStore.id;
+                  const itemIndex = String(i + 1).padStart(2, '0');
                   return (
-                    <motion.button
+                    <button
                       key={store.id}
                       onClick={() => handleSelectStore(store)}
-                      className={`w-full text-left p-5 rounded-xl border transition-all duration-300 relative overflow-hidden group/item cursor-pointer flex gap-4 shrink-0 ${
+                      className={`w-full text-left p-4 transition-all duration-300 relative group/item cursor-pointer flex gap-3 shrink-0 border ${
                         isActive 
-                          ? 'bg-neutral-950 border-neutral-950 text-white shadow-lg shadow-black/10' 
-                          : 'bg-white border-black/5 hover:border-black/15 hover:bg-neutral-50 text-neutral-900 shadow-sm'
+                          ? 'bg-white border-black/20 shadow-md translate-x-1 border-l-4 border-l-amber-800' 
+                          : 'bg-[#f8f9fa] border-neutral-100 hover:border-neutral-300 hover:bg-white hover:translate-x-1 hover:shadow-sm'
                       }`}
                     >
-                      {/* Active sidebar pill indicator */}
-                      <div className={`absolute top-0 bottom-0 left-0 w-1 transition-all ${
-                        isActive ? 'bg-amber-600' : 'bg-transparent group-hover/item:bg-neutral-200'
-                      }`} />
-
                       <div className="flex-1">
-                        <div className="flex justify-between items-start mb-2">
-                          <div>
-                            <span className={`text-[9px] font-bold font-mono tracking-wider uppercase block ${
-                              isActive ? 'text-amber-500' : 'text-amber-800'
+                        <div className="flex justify-between items-baseline mb-1.5">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-[9.5px] font-sans font-bold tracking-wider px-1.5 py-0.5 border ${
+                              isActive ? 'border-amber-800 text-amber-800 bg-amber-800/5' : 'border-neutral-200 text-neutral-400 bg-neutral-50'
                             }`}>
-                              {store.category === 'domestic' ? 'SOUTH KOREA' : 'GLOBAL FLAGSHIP'}
+                              {store.category === 'domestic' ? '국내' : '해외'}
                             </span>
-                            <h3 className="text-sm font-extrabold tracking-tight mt-0.5 leading-snug">
-                              {store.name}
-                            </h3>
+                            <span className="text-[9px] font-mono tracking-widest text-[#8a7a6b] font-bold">
+                              {store.id.toUpperCase()}
+                            </span>
                           </div>
                           
-                          <MapPin size={15} className={isActive ? 'text-amber-500' : 'text-neutral-400 group-hover/item:text-black'} />
+                          {/* Elegant Numbering Tag */}
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-mono font-medium text-neutral-400 group-hover/item:text-neutral-900 transition-colors">
+                              {itemIndex}
+                            </span>
+                            <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${isActive ? 'bg-amber-800 scale-125' : 'bg-transparent'}`} />
+                          </div>
                         </div>
+
+                        <h3 className="text-[13px] font-extrabold tracking-tight text-neutral-900 font-sans block">
+                          {store.name}
+                        </h3>
                         
-                        <p className={`text-[11px] leading-relaxed line-clamp-1 opacity-70 mb-2.5 ${
-                          isActive ? 'text-neutral-300' : 'text-neutral-500'
-                        }`}>
+                        <p className="text-[11px] leading-relaxed line-clamp-1 text-neutral-500 mt-1 font-sans font-medium">
                           {store.address}
                         </p>
                         
-                        <div className="flex items-center gap-3 text-[10px] font-mono leading-none opacity-80">
-                          <span className="flex items-center gap-1.5">
-                            <Clock size={11} />
+                        <div className="flex items-center justify-between text-[9px] font-mono leading-none text-neutral-400 mt-2.5 pt-2 border-t border-black/5">
+                          <span className="flex items-center gap-1 font-semibold">
+                            <Clock size={10} strokeWidth={2} />
                             {store.hours.split('(')[0]}
+                          </span>
+                          <span className="opacity-0 group-hover/item:opacity-100 transition-opacity flex items-center text-amber-800 font-bold gap-0.5">
+                            지도 보기 <ChevronRight size={10} strokeWidth={3} />
                           </span>
                         </div>
                       </div>
-                    </motion.button>
+                    </button>
                   );
                 })
               )}
@@ -417,116 +440,111 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
 
           </div>
 
-          {/* Clean minimal separator instead of advertising */}
-          <div className="pt-2 border-t border-black/5" />
+          <div className="pt-2 border-t border-black/10 flex justify-between items-center text-[10px] font-sans text-neutral-400">
+            <span>© 젠틀몬스터 공간 가이드</span>
+            <span className="font-bold font-mono">VER. 2.65</span>
+          </div>
 
         </div>
 
-        {/* MIDDLE COLUMN: Fully Interactive Live Map (5 Columns) */}
-        <div className="lg:col-span-5 relative bg-neutral-100 flex items-stretch min-h-[350px] lg:min-h-[auto]">
+        {/* MIDDLE COLUMN: Interactive Live Map with custom vignette & contrast frame (5 Columns) */}
+        <div className="lg:col-span-5 relative bg-[#e4e4e7] flex items-stretch min-h-[380px] lg:min-h-[auto] border-r border-[#e4e4e7]">
           
           {/* Leaflet Reference Frame Container */}
           <div ref={mapContainerRef} className="w-full h-full z-10" id="offline-leaflet-map" />
 
-          {/* Minimalist Map Frame Borders & Ambient Gradients Overlay */}
-          <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-black/5 to-transparent pointer-events-none select-none z-20" />
+          {/* Luxury Frame Borders Overlaying standard Leaflet Map */}
+          <div className="absolute inset-0 border-4 border-white/45 pointer-events-none select-none z-20 pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/10 via-black/5 to-transparent pointer-events-none select-none z-20" />
           
-          {/* Floating HUD Indicator on top corner */}
-          <div className="absolute top-4 left-4 bg-black/95 text-white backdrop-blur-md px-3.5 py-1.5 rounded-full z-20 flex items-center gap-2 shadow border border-white/10 pointer-events-none select-none">
-            <Globe className="text-amber-500 animate-pulse" size={13} />
-            <span className="text-[10.5px] font-mono font-bold tracking-wider">
-              {activeStore.engName}
+          {/* Floating HUD Indicator on top corner (Polished look) */}
+          <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-none z-20 flex items-center gap-2.5 shadow-md border border-neutral-200 pointer-events-none select-none font-sans">
+            <div className="w-2 h-2 rounded-full bg-amber-800 animate-pulse" />
+            <span className="text-[9px] font-sans font-bold tracking-wider text-[#8a7a6b]">선택된 매장</span>
+            <span className="text-[10px] font-sans font-extrabold tracking-wider text-neutral-800 pl-1 border-l border-neutral-200">
+              {activeStore.name}
             </span>
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Selective Store Spotlight Detail Viewer (3 Columns) */}
-        <div className="lg:col-span-3 bg-brand-bg border-l border-black/5 flex flex-col justify-between py-6 px-5 h-[550px] lg:h-[calc(100vh-96px)] overflow-y-auto">
+        {/* RIGHT COLUMN: Selective Store Spotlight Detail Viewer with Luxury Editorial layout (3 Columns) */}
+        <div className="lg:col-span-3 bg-white/95 backdrop-blur-sm flex flex-col justify-between py-6 px-6 h-[550px] lg:h-[calc(100vh-108px)] overflow-y-auto no-scrollbar">
           
           <AnimatePresence mode="wait">
             <motion.div
               key={activeStore.id}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.35 }}
-              className="flex flex-col gap-4 flex-1"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="flex flex-col gap-6 flex-1"
             >
-              {/* Store High Quality Image Representation */}
-              <div className="w-full h-[160px] bg-neutral-100 rounded-xl overflow-hidden relative group/frame border border-black/5 shadow-sm">
+              {/* Store High Quality Image Representation with high-end border style */}
+              <div className="w-full h-[178px] bg-neutral-100 rounded-none overflow-hidden relative group/frame border-2 border-black/10 shadow-sm">
                 <img 
                   src={activeStore.image} 
                   alt={activeStore.name} 
-                  className="w-full h-full object-cover transition-transform duration-[4000ms] ease-out group-hover/frame:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-[6000ms] ease-out group-hover/frame:scale-105"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                <div className="absolute bottom-3 left-4 flex items-center gap-1.5 text-white">
-                  <CheckCircle className="text-amber-400" size={13} />
-                  <span className="text-[11px] font-bold uppercase tracking-wider font-mono">
-                    Verified Space
+              </div>
+
+              {/* Title Header - Editorial masterpiece */}
+              <div className="border-b border-black/10 pb-4">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="text-[10px] font-bold text-[#8a7a6b] tracking-wider block font-sans">
+                    매장 스포트라이트
+                  </span>
+                  <div className="h-2 w-[1px] bg-black/20" />
+                  <span className="text-[10px] text-neutral-400 font-bold font-sans">
+                    {activeStore.category === 'domestic' ? '국내 매장' : '해외 매장'}
                   </span>
                 </div>
-              </div>
-
-              {/* Title Header */}
-              <div className="bg-white border border-black/5 p-4 rounded-xl shadow-sm">
-                <span className="text-[10px] font-bold text-amber-800 tracking-[0.2em] font-mono uppercase block mb-1">
-                  OFFLINE SPOTLIGHT
-                </span>
-                <h2 className="text-lg font-extrabold tracking-tight text-neutral-900 leading-tight">
+                <h2 className="text-[17px] font-black tracking-tight text-neutral-900 leading-tight">
                   {activeStore.name}
                 </h2>
-                <span className="text-[10.5px] font-mono font-bold text-neutral-400 block mt-1">
-                  {activeStore.engName}
-                </span>
               </div>
 
-              {/* Unique Concept Theme Description */}
-              <div className="bg-white border border-black/5 p-4 rounded-xl flex flex-col gap-2 relative shadow-sm">
-                <span className="text-[9px] font-bold font-mono tracking-wider text-neutral-400 uppercase">
-                  공간 테마 (CONCEPT DEFINITION)
+              {/* Unique Concept Theme Description - High-end letterpress note block */}
+              <div className="flex flex-col gap-2 pb-4 border-b border-black/10">
+                <span className="text-[10px] font-bold tracking-wider text-[#8a7a6b] font-sans">
+                  공간 콘셉트
                 </span>
-                <p className="text-[12px] font-bold text-neutral-800 leading-relaxed font-sans break-keep">
+                <p className="text-[12.5px] font-bold text-neutral-800 leading-relaxed font-sans break-keep bg-[#f4f4f5] border-l-2 border-amber-800 p-2.5">
                   {activeStore.theme}
                 </p>
-                <CornerDownRight size={14} className="absolute right-3.5 bottom-3 text-neutral-300" />
               </div>
 
-              {/* Kinetic Art Installation Installation features */}
-              <div className="bg-white border border-black/5 p-4 rounded-xl flex flex-col gap-2 shadow-sm">
-                <span className="text-[9.5px] font-bold text-neutral-400 font-mono tracking-wider uppercase">
-                  아트 인스톨레이션 설치 정보
+              {/* Kinetic Art Installation Installation features - Editorial note */}
+              <div className="flex flex-col gap-2 pb-4 border-b border-black/10">
+                <span className="text-[10px] font-bold tracking-wider text-[#8a7a6b] font-sans">
+                  예술품 연출 및 설치
                 </span>
-                <p className="text-[11.5px] leading-relaxed text-neutral-600 font-sans tracking-tight break-keep">
+                <p className="text-[12px] leading-relaxed text-neutral-600 font-sans tracking-tight break-keep pl-1 border-r border-black/5">
                   {activeStore.installations}
                 </p>
               </div>
 
-              {/* Metadata Details List */}
-              <div className="bg-white border border-black/5 p-4 rounded-xl shadow-sm flex flex-col gap-3.5">
-                <div className="flex items-start gap-3">
-                  <MapPin size={15} className="text-neutral-500 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <span className="text-[9.5px] font-mono font-bold text-neutral-400 block uppercase">주소</span>
-                    <span className="text-[11.5px] text-neutral-800 font-semibold break-keep block leading-normal">{activeStore.address}</span>
-                  </div>
+              {/* Metadata Details List - Clean list with beautiful styling */}
+              <div className="flex flex-col gap-3 py-1">
+                <div className="flex justify-between items-baseline text-[11.5px] leading-relaxed">
+                  <span className="text-[10px] text-neutral-400 font-sans font-bold">주소</span>
+                  <span className="text-right text-neutral-800 font-bold max-w-[70%] break-keep leading-snug">{activeStore.address}</span>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <Phone size={15} className="text-neutral-500 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <span className="text-[9.5px] font-mono font-bold text-neutral-400 block uppercase">전화번호</span>
-                    <span className="text-[11.5px] text-neutral-800 font-semibold block">{activeStore.phone}</span>
-                  </div>
+                <div className="h-[1px] bg-black/5" />
+
+                <div className="flex justify-between items-center text-[11.5px]">
+                  <span className="text-[10px] text-neutral-400 font-sans font-bold">전화번호</span>
+                  <span className="text-neutral-800 font-mono font-black tracking-wide text-amber-900">{activeStore.phone}</span>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <Clock size={15} className="text-neutral-500 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <span className="text-[9.5px] font-mono font-bold text-neutral-400 block uppercase">운영시간</span>
-                    <span className="text-[11.5px] text-neutral-800 font-semibold block leading-normal">{activeStore.hours}</span>
-                  </div>
+                <div className="h-[1px] bg-black/5" />
+
+                <div className="flex justify-between items-center text-[11.5px]">
+                  <span className="text-[10px] text-neutral-400 font-sans font-bold">운영 시간</span>
+                  <span className="text-neutral-800 font-semibold">{activeStore.hours.split('(')[0]}</span>
                 </div>
               </div>
 
@@ -534,9 +552,9 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
               <div className="mt-1 flex flex-col gap-2">
                 <button
                   onClick={() => setIsTrafficTipVisible(!isTrafficTipVisible)}
-                  className="w-full bg-white border border-black/10 hover:border-black/30 hover:bg-neutral-50 text-black py-2.5 rounded-xl text-xs font-bold font-mono tracking-wide transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+                  className="w-full bg-[#f4f4f5] hover:bg-neutral-900 hover:text-white border border-neutral-300 py-3 rounded-none text-[10.5px] font-bold tracking-wide transition-all flex items-center justify-center gap-2 cursor-pointer font-sans shadow-sm"
                 >
-                  <Navigation size={13} />
+                  <Navigation size={11.5} className="animate-pulse" />
                   {isTrafficTipVisible ? "찾아오는 길 닫기" : "찾아오는 길 안내"}
                 </button>
 
@@ -548,7 +566,8 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
                       exit={{ opacity: 0, height: 0 }}
                       className="overflow-hidden mt-1"
                     >
-                      <div className="bg-[#f2ede9] border border-[#dfd7ce] p-3 text-[11px] leading-relaxed text-[#514330] rounded-xl font-medium break-keep shadow-xs">
+                      <div className="bg-[#f4f4f5] border-2 border-neutral-200 p-4 text-[11px] leading-relaxed text-neutral-700 rounded-none font-semibold break-keep shadow-inner relative">
+                        <div className="absolute top-0 right-0 p-1 text-[8px] font-sans text-neutral-400 opacity-65 font-bold">대중교통 안내</div>
                         {activeStore.trafficTip}
                       </div>
                     </motion.div>
@@ -560,12 +579,12 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
           </AnimatePresence>
 
           {/* Action button to return to collection list */}
-          <div className="mt-6 border-t border-black/5 pt-4">
+          <div className="mt-6 border-t border-black/10 pt-4">
             <button
               onClick={onBack}
-              className="w-full bg-black text-white hover:bg-neutral-800 py-3 rounded-xl text-xs font-extrabold tracking-widest transition-all cursor-pointer block text-center shadow-md active:scale-[0.99] uppercase"
+              className="w-full bg-brand-ink text-brand-bg hover:bg-neutral-800 py-4 rounded-none text-[11px] font-bold tracking-widest transition-all cursor-pointer block text-center uppercase font-sans"
             >
-              컬렉션 보기로 이동
+              컬렉션 목록으로 돌아가기
             </button>
           </div>
 

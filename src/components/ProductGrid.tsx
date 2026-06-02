@@ -56,8 +56,9 @@ function ProductCard({
           <img 
             src={p.images.thumbnail} 
             alt={p.name} 
-            className="w-full h-full object-contain p-0 group-hover:scale-105 transition-transform duration-500 ease-out" 
+            className="w-full h-full object-contain p-0 group-hover:scale-105 transition-transform duration-500 ease-out will-change-transform" 
             referrerPolicy="no-referrer"
+            loading="lazy"
             onError={() => setImageError(true)}
           />
         ) : (

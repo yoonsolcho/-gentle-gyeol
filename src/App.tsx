@@ -37,7 +37,7 @@ export default function App() {
       '/assets/products/궁궐/기와/기와_대각선-1.png',
       '/assets/products/궁궐/창호/창호_대각선-1.jpeg',
       '/assets/products/궁궐/단청/단청_대각선-1.png',
-      '/assets/products/날개/비상/비상_대각선.png',
+      '/assets/products/날개/비상/비상_대각선-1.png',
       '/assets/products/날개/천공/천공_대각선-1.png',
       '/assets/products/날개/바람/바람_대각선-1.png',
       '/assets/products/문양/연화문/연화문_대각선-1.png',

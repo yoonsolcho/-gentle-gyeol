@@ -119,15 +119,31 @@ export default function ProductDetail({
   onToggleWishlist,
   onAddToCart
 }: Props) {
-  const [activeTab, setActiveTab] = useState<"detail" | "preorder" | "shipping">("detail");
+  const [openTabs, setOpenTabs] = useState<Record<string, boolean>>({
+    preorder: false,
+    shipping: false,
+    detail: true,
+  });
+
+  const toggleTab = (tab: string) => {
+    setOpenTabs(prev => ({ ...prev, [tab]: !prev[tab] }));
+  };
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [imageLoadError, setImageLoadError] = useState(false);
 
-  // Reset active image index on product change
+  // Reset active image index and pre-warm detail images cache for instant zero-lag thumbnail switching
   useEffect(() => {
     setActiveImageIndex(0);
     setImageLoadError(false);
+
+    // Dynamic pre-warm of other detail views for this product
+    if (product.images?.detail) {
+      product.images.detail.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    }
   }, [product.id]);
 
   // Reset image error state when active image index changes
@@ -279,10 +295,10 @@ export default function ProductDetail({
         </div>
 
         {/* Main Two-Column Structure */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-stretch min-h-[600px]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch lg:items-start min-h-[500px]">
           
           {/* LEFT AREA: Realistic 3D Showcase (Responsive width 7 columns) */}
-          <div className="lg:col-span-8 flex flex-col justify-between border border-black/5 rounded-3xl p-6 md:p-12 relative overflow-hidden group/showcase transition-colors duration-500 bg-[#ffffff]">
+          <div className="lg:col-span-8 flex flex-col justify-between border border-black/5 rounded-2xl p-4 md:p-8 relative overflow-hidden group/showcase transition-colors duration-500 bg-[#ffffff]">
 
             {/* Backplane Accent Pattern */}
             <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-[0.03] pointer-events-none select-none">
@@ -353,79 +369,79 @@ export default function ProductDetail({
 
           </div>
 
-          {/* RIGHT AREA: Product Detail & Control Column (Responsive width 4 columns) */}
-          <div className="lg:col-span-4 flex flex-col justify-between bg-white border border-black/5 rounded-3xl p-6 md:p-8">
-            <div className="flex flex-col gap-6">
+          {/* RIGHT AREA: Product Detail & Control Column (Responsive width 4 columns wrapped in desktop sticky) */}
+          <div className="lg:col-span-4 lg:sticky lg:top-[88px] lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto no-scrollbar flex flex-col justify-between bg-white border border-black/5 rounded-2xl p-4 md:p-5 shadow-sm">
+            <div className="flex flex-col gap-4">
               
               {/* Product Heading & Price */}
               <div className="flex justify-between items-start gap-4">
                 <div className="flex-1">
-                  <h1 className="font-sans text-2xl md:text-3xl font-bold tracking-tight text-neutral-900 leading-tight">
+                  <h1 className="font-sans text-xl md:text-2xl font-bold tracking-tight text-neutral-900 leading-tight">
                     {product.name}
                   </h1>
                 </div>
                 
                 <button 
                   onClick={() => onToggleWishlist && onToggleWishlist(product)}
-                  className={`p-2.5 rounded-full border transition-all cursor-pointer ${
+                  className={`p-2 rounded-full border transition-all cursor-pointer ${
                     isBookmarked 
                       ? "bg-amber-500/10 border-amber-500 text-amber-500" 
                       : "bg-[#f5f5f7] border-black/10 text-neutral-400 hover:text-black hover:bg-neutral-100"
                   }`}
                   title="위시리스트"
                 >
-                  <Bookmark size={18} className={isBookmarked ? "fill-current" : ""} />
+                  <Bookmark size={15} className={isBookmarked ? "fill-current" : ""} />
                 </button>
               </div>
 
               {/* Price Tag with availability */}
-              <div className="py-2 border-b border-black/5">
-                <span className="font-mono text-lg font-bold text-neutral-900">
+              <div className="py-1 border-b border-black/5 flex items-center justify-between">
+                <span className="font-mono text-base font-bold text-neutral-900">
                   {product.price === "품절" ? "₩420,000" : product.price}
                 </span>
-                <span className="text-xs font-semibold ml-2.5 text-neutral-500 bg-neutral-100 px-2 py-1 rounded">
+                <span className="text-[10px] font-semibold text-neutral-500 bg-neutral-100 px-2 py-0.5 rounded">
                   {product.soldOut ? "입고 알림 예약" : "6/5 구매 가능"}
                 </span>
               </div>
 
               {/* Color Selection Panel */}
-              <div className="flex flex-col gap-2.5 mt-2">
-                <div className="flex justify-between items-center text-xs font-bold text-neutral-500">
+              <div className="flex flex-col gap-2 mt-0.5">
+                <div className="flex justify-between items-center text-[11px] font-bold text-neutral-400">
                   <span>프레임 컬러 선택</span>
                   <span className="text-black font-semibold">{currentColor.name}</span>
                 </div>
                 
                 {/* 3 Color chips resembling the mock image style */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5">
                   {colorOptions.map((opt, index) => (
                     <button
                       key={opt.id}
                       onClick={() => setSelectedColorIndex(index)}
-                      className={`w-9 h-9 rounded-lg border flex items-center justify-center p-[2px] transition-all duration-300 relative cursor-pointer group ${
+                      className={`w-8 h-8 rounded-lg border flex items-center justify-center p-[2px] transition-all duration-300 relative cursor-pointer group ${
                         selectedColorIndex === index 
                           ? "border-black ring-2 ring-black/10 scale-105" 
                           : "border-black/10 hover:border-black/50 hover:scale-102"
                       }`}
                       title={opt.name}
                     >
-                      <div className={`w-full h-full rounded-[6px] ${opt.classes}`} />
+                      <div className={`w-full h-full rounded-[5px] ${opt.classes}`} />
                       
                       {/* Interactive dot if active */}
                       {selectedColorIndex === index && (
-                        <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-black rounded-full border border-white" />
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-black rounded-full border border-white" />
                       )}
                     </button>
                   ))}
                   
                   {/* Subtle helpful text on active selection */}
-                  <span className="text-[10px] text-neutral-400 font-medium ml-1">
+                  <span className="text-[9.5px] text-neutral-400 font-medium ml-1">
                     실버 / 클리어
                   </span>
                 </div>
               </div>
 
               {/* Huge Call to Action Button */}
-              <div className="mt-4 flex flex-col gap-2">
+              <div className="mt-2 flex flex-col gap-1.5">
                 <button
                   onClick={() => {
                     if (product.soldOut) {
@@ -434,97 +450,97 @@ export default function ProductDetail({
                       onAddToCart(product, currentColor.name);
                     }
                   }}
-                  className="w-full bg-black hover:bg-neutral-800 text-white font-bold text-sm tracking-widest py-4 rounded-xl transition-all shadow-md active:scale-[0.99] cursor-pointer"
+                  className="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs tracking-widest py-3.5 rounded-xl transition-all shadow-md active:scale-[0.99] cursor-pointer"
                 >
                   {product.soldOut ? "시즌 입고 알림 받기" : "쇼핑백 담기"}
                 </button>
-                <p className="text-[10.5px] text-neutral-400 justify-center text-center mt-1 break-keep leading-relaxed block">
+                <p className="text-[9px] text-neutral-400 justify-center text-center mt-0.5 break-keep leading-relaxed block">
                   * 본 협업 패션 기어는 무형문화재 장인의 수공 제조 공정이 동반되어 선착순 한정 예약제로만 인도 준비됩니다.
                 </p>
               </div>
 
-              {/* Accordion Menus (Direct Mock Clone) */}
-              <div className="mt-6 flex flex-col border-t border-black/5 divide-y divide-black/5">
+              {/* Accordion Menus (Direct Mock Clone with Independent Collapsing) */}
+              <div className="mt-3 flex flex-col border-t border-black/5 divide-y divide-black/5">
                 
                 {/* Accordion 1: 프리오더 */}
-                <div className="py-3">
+                <div className="py-2.5">
                   <button 
-                    onClick={() => setActiveTab(activeTab === "preorder" ? "detail" : "preorder")}
+                    onClick={() => toggleTab("preorder")}
                     className="w-full flex items-center justify-between text-left cursor-pointer group"
                   >
                     <span className="text-xs font-bold text-neutral-700 tracking-tight group-hover:text-black transition-colors">
                       프리오더
                     </span>
-                    {activeTab === "preorder" ? <Minus size={14} /> : <Plus size={14} />}
+                    {openTabs.preorder ? <Minus size={12} /> : <Plus size={12} />}
                   </button>
                   
                   <AnimatePresence>
-                    {activeTab === "preorder" && (
+                    {openTabs.preorder && (
                       <motion.div 
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="overflow-hidden mt-2 text-[11.5px] leading-relaxed text-neutral-500 break-keep"
+                        className="overflow-hidden mt-1.5 text-[11px] leading-relaxed text-neutral-500 break-keep"
                       >
-                        '결의 시선' 한정판 프리오더 주문 건은 6월 5일부터 결제 순번에 따라 최우선 순차 출고됩니다. 무형문화 유산 전문 장인이 직접 한 땀 한 땀 마스터 메탈 가공을 거치기 때문에 희소 소장가치가 입체적으로 극대화됩니다.
+                        '결의 시선' 한정판 프리오더 주문 건은 6월 5일부터 결제 순번에 따라 최우선 순차 출고됩니다. 무형문화 유산 전문 장인이 직접 한 땀 한 땀 마스터 메탈 가공을 거치기 때문에 희소 소장가치가 극대화됩니다.
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
 
                 {/* Accordion 2: 무료 배송 & 반품 */}
-                <div className="py-3">
+                <div className="py-2.5">
                   <button 
-                    onClick={() => setActiveTab(activeTab === "shipping" ? "detail" : "shipping")}
+                    onClick={() => toggleTab("shipping")}
                     className="w-full flex items-center justify-between text-left cursor-pointer group"
                   >
                     <span className="text-xs font-bold text-neutral-700 tracking-tight group-hover:text-black transition-colors">
                       무료 배송 & 반품
                     </span>
-                    {activeTab === "shipping" ? <Minus size={14} /> : <Plus size={14} />}
+                    {openTabs.shipping ? <Minus size={12} /> : <Plus size={12} />}
                   </button>
                   
                   <AnimatePresence>
-                    {activeTab === "shipping" && (
+                    {openTabs.shipping && (
                       <motion.div 
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="overflow-hidden mt-2 text-[11.5px] leading-relaxed text-neutral-500 break-keep"
+                        className="overflow-hidden mt-1.5 text-[11px] leading-relaxed text-neutral-500 break-keep"
                       >
-                        모든 주문은 국내외 안전 보험 택배를 기본 채택하여 무료 배송됩니다. 배송 완료 후 7일 이내에는 변심이나 품질 불만에 관계없이 무료 반품/교환 처리가 가능하나, 한정 장인 에디션 수량 사정상 교환의 경우 조기 품절에 따른 대기 시간이 가중될 수 있습니다.
+                        모든 주문은 국내외 안전 보험 택배를 기본 채택하여 무료 배송됩니다. 배송 완료 후 7일 이내에는 변심이나 품질 불만에 관계없이 무료 반품/교환 처리가 가능합니다.
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
 
                 {/* Accordion 3: 세부 정보 */}
-                <div className="py-3">
+                <div className="py-2.5">
                   <button 
-                    onClick={() => setActiveTab(activeTab === "detail" ? "preorder" : "detail")}
+                    onClick={() => toggleTab("detail")}
                     className="w-full flex items-center justify-between text-left cursor-pointer group"
                   >
                     <span className="text-xs font-bold text-neutral-700 tracking-tight group-hover:text-black transition-colors">
                       세부 정보
                     </span>
-                    {activeTab === "detail" ? <Minus size={14} /> : <Plus size={14} />}
+                    {openTabs.detail ? <Minus size={12} /> : <Plus size={12} />}
                   </button>
                   
                   <AnimatePresence>
-                    {activeTab === "detail" && (
+                    {openTabs.detail && (
                       <motion.div 
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="overflow-hidden mt-3 flex flex-col gap-3"
+                        className="overflow-hidden mt-2 flex flex-col gap-2"
                       >
                         {/* Text descriptions */}
-                        <div className="text-[12px] font-bold text-neutral-800 leading-snug">
+                        <div className="text-[11.5px] font-bold text-neutral-800 leading-snug">
                           글로시 실버 메탈 소재의 스퀘어 안경
                         </div>
                         
                         {/* Specs list bullet items */}
-                        <ul className="text-[11.5px] text-neutral-500 leading-relaxed space-y-1.5 list-disc pl-3">
+                        <ul className="text-[11px] text-neutral-500 leading-relaxed space-y-1 list-disc pl-3">
                           {listDetails.map((feat, i) => (
                             <li key={i} className="break-keep">{feat}</li>
                           ))}
@@ -538,16 +554,7 @@ export default function ProductDetail({
 
             </div>
 
-            {/* Back Arrow link to quickly go back to collection */}
-            <div className="mt-8 border-t border-black/5 pt-4 flex justify-center">
-              <button
-                onClick={onBack}
-                className="text-xs font-bold tracking-wider text-black hover:opacity-70 transition-all flex items-center gap-2 cursor-pointer uppercase"
-              >
-                닫고 다른 디자인 보기 <ChevronRight size={14} />
-              </button>
-            </div>
-
+            
           </div>
 
         </div>
