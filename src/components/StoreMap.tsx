@@ -460,7 +460,7 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
           {/* Floating HUD Indicator on top corner (Polished look) */}
           <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-none z-20 flex items-center gap-2.5 shadow-md border border-neutral-200 pointer-events-none select-none font-sans">
             <div className="w-2 h-2 rounded-full bg-amber-800 animate-pulse" />
-            <span className="text-[9px] font-sans font-bold tracking-wider text-[#8a7a6b]">선택된 매장</span>
+            <span className="text-[9px] font-sans font-bold tracking-wider text-[#8a7a6b]">선택된 지점</span>
             <span className="text-[10px] font-sans font-extrabold tracking-wider text-neutral-800 pl-1 border-l border-neutral-200">
               {activeStore.name}
             </span>
@@ -494,11 +494,11 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
               <div className="border-b border-black/10 pb-4">
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="text-[10px] font-bold text-[#8a7a6b] tracking-wider block font-sans">
-                    매장 스포트라이트
+                    지점 스포트라이트
                   </span>
                   <div className="h-2 w-[1px] bg-black/20" />
                   <span className="text-[10px] text-neutral-400 font-bold font-sans">
-                    {activeStore.category === 'domestic' ? '국내 매장' : '해외 매장'}
+                    {activeStore.category === 'domestic' ? '국내 지점' : '해외 지점'}
                   </span>
                 </div>
                 <h2 className="text-[17px] font-black tracking-tight text-neutral-900 leading-tight">

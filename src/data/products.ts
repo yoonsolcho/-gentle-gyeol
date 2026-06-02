@@ -3,7 +3,7 @@ export interface Product {
   name: string;
   engName: string;
   price: string;
-  category: "전통공예" | "꽃 컬렉션" | "궁궐 컬렉션" | "날개 컬렉션" | "문양 컬렉션";
+  category: "꽃 컬렉션" | "궁궐 컬렉션" | "날개 컬렉션" | "문양 컬렉션";
   color: string;
   type: "sunglasses" | "glasses";
   soldOut?: boolean;
@@ -16,46 +16,6 @@ export interface Product {
 }
 
 export const productsData: Product[] = [
-  // 전통공예
-  {
-    id: "craft-1",
-    name: "청화 리본 01 RD",
-    engName: "CHUNGHWA RIBBON 01 RD",
-    price: "₩420,000",
-    category: "전통공예",
-    color: "red",
-    type: "sunglasses",
-  },
-  {
-    id: "craft-2",
-    name: "나전 윙 02 NV",
-    engName: "NAJEON WING 02 NV",
-    price: "₩450,000",
-    category: "전통공예",
-    color: "navy",
-    type: "sunglasses",
-  },
-  {
-    id: "craft-3",
-    name: "백자 쉘 03 IV",
-    engName: "BAEKJA SHELL 03 IV",
-    price: "품절",
-    category: "전통공예",
-    color: "ivory",
-    type: "glasses",
-    soldOut: true,
-  },
-  {
-    id: "craft-4",
-    name: "오리가미 02",
-    engName: "ORIGAMI 02",
-    price: "₩320,000",
-    category: "전통공예",
-    color: "silver",
-    type: "glasses",
-    statusText: "재입고 예정",
-  },
-
   // 꽃 컬렉션
   {
     id: "flower-1",
