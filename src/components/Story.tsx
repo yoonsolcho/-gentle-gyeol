@@ -168,7 +168,7 @@ export default function Story({ onBack }: Props) {
         </div>
 
         {/* Interactive Story Section Display */}
-        <div className="bg-white border border-black/5 shadow-sm rounded-3xl overflow-hidden min-h-[500px] flex flex-col">
+        <div className="bg-white shadow-xs rounded-3xl overflow-hidden min-h-[500px] flex flex-col">
           {/* Custom Story Tab Selection Bar */}
           <div className="px-6 md:px-10 py-5 bg-[#faf9f8] border-b border-black/5 flex gap-2.5 overflow-x-auto no-scrollbar">
             {storyTabs.map((tab) => {

@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Heart, Square, User, ShoppingBag, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface Props {
+  activeCollection?: string;
+  activeView?: string;
   onChangeCollection?: (collection: string, typeFilter?: 'all' | 'sunglasses' | 'glasses') => void;
   onChangeView?: (view: 'home' | 'story' | 'store') => void;
   searchQuery?: string;
@@ -13,6 +15,8 @@ interface Props {
 }
 
 export default function Header({ 
+  activeCollection = "홈",
+  activeView = "home",
   onChangeCollection, 
   onChangeView, 
   searchQuery = "", 
@@ -27,6 +31,17 @@ export default function Header({
   const [isMoreHovered, setIsMoreHovered] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const isCampaignHeroMode = activeView === 'home' && activeCollection === '홈' && !searchQuery && !isScrolled;
 
   const handleSelectCollection = (name: string, typeFilter?: 'all' | 'sunglasses' | 'glasses') => {
     if (onChangeCollection) {
@@ -38,11 +53,17 @@ export default function Header({
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full h-[48px] bg-brand-bg/80 backdrop-blur-xl z-[1000] flex items-center justify-between px-4 sm:px-6 lg:px-12 border-b border-black/5">
+    <header className={`fixed top-0 left-0 w-full h-[48px] z-[1000] flex items-center justify-between px-4 sm:px-6 lg:px-12 transition-all duration-300 ${
+      isCampaignHeroMode 
+        ? "bg-transparent border-b border-transparent text-white" 
+        : "bg-brand-bg/85 backdrop-blur-xl border-b border-black/5 text-brand-ink"
+    }`}>
       {/* Mobile Hamburger Menu Toggle */}
       <button 
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden p-1.5 hover:bg-black/5 rounded-full transition-colors cursor-pointer text-brand-ink z-[1020]"
+        className={`lg:hidden p-1.5 rounded-full transition-colors cursor-pointer z-[1020] ${
+          isCampaignHeroMode ? "hover:bg-white/10 text-white" : "hover:bg-black/5 text-brand-ink"
+        }`}
         aria-label="메뉴 토글"
       >
         {isMobileMenuOpen ? <X size={18} strokeWidth={2} /> : <Menu size={18} strokeWidth={2} />}
@@ -155,7 +176,9 @@ export default function Header({
             onChangeView('home');
           }
         }}
-        className="absolute left-1/2 -translate-x-1/2 font-serif text-[11px] sm:text-sm md:text-base lg:text-lg font-semibold tracking-[0.05em] sm:tracking-[0.1em] lg:tracking-[0.15em] uppercase whitespace-nowrap cursor-pointer hover:opacity-75 transition-opacity text-neutral-950"
+        className={`absolute left-1/2 -translate-x-1/2 font-serif text-[11px] sm:text-sm md:text-base lg:text-lg font-semibold tracking-[0.05em] sm:tracking-[0.1em] lg:tracking-[0.15em] uppercase whitespace-nowrap cursor-pointer hover:opacity-75 transition-all duration-300 ${
+          isCampaignHeroMode ? 'text-white' : 'text-neutral-950'
+        }`}
       >
         <motion.span
           initial={{ opacity: 0, y: 10 }}
@@ -178,25 +201,35 @@ export default function Header({
             setIsSearchOpen(true);
             if (onChangeView) onChangeView('home');
           }}
-          className="p-1.5 hover:bg-black/5 rounded-full transition-colors cursor-pointer"
+          className={`p-1.5 rounded-full transition-colors cursor-pointer ${
+            isCampaignHeroMode ? "hover:bg-white/10" : "hover:bg-black/5"
+          }`}
         >
           <Search size={17} strokeWidth={1.8} />
         </button>
 
-        <button className="p-1.5 hover:bg-black/5 rounded-full transition-colors cursor-pointer">
+        <button className={`p-1.5 rounded-full transition-colors cursor-pointer ${
+          isCampaignHeroMode ? "hover:bg-white/10" : "hover:bg-black/5"
+        }`}>
           <User size={17} strokeWidth={1.8} />
         </button>
         <button 
           onClick={() => onOpenCart && onOpenCart('cart')}
-          className="p-1.5 hover:bg-black/5 rounded-full transition-colors relative cursor-pointer" 
+          className={`p-1.5 rounded-full transition-colors relative cursor-pointer ${
+            isCampaignHeroMode ? "hover:bg-white/10" : "hover:bg-black/5"
+          }`} 
         >
           <ShoppingBag size={17} strokeWidth={1.8} />
           {cartCount > 0 ? (
-            <span className="absolute -top-1 -right-1 bg-neutral-900 text-white text-[8px] font-mono font-bold w-4 h-4 rounded-full flex items-center justify-center select-none shadow-xs">
+            <span className={`absolute -top-1 -right-1 text-white text-[8px] font-mono font-bold w-4 h-4 rounded-full flex items-center justify-center select-none shadow-xs ${
+              isCampaignHeroMode ? "bg-white text-neutral-950" : "bg-neutral-900"
+            }`}>
               {cartCount}
             </span>
           ) : (
-            <span className="absolute top-0.5 right-0.5 w-[6px] h-[6px] bg-neutral-900 rounded-full" />
+            <span className={`absolute top-0.5 right-0.5 w-[6px] h-[6px] rounded-full ${
+              isCampaignHeroMode ? "bg-white" : "bg-neutral-900"
+            }`} />
           )}
         </button>
       </nav>

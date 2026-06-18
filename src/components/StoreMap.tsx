@@ -479,8 +479,8 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
               transition={{ duration: 0.35, ease: "easeOut" }}
               className="flex flex-col gap-6 flex-1"
             >
-              {/* Store High Quality Image Representation with high-end border style */}
-              <div className="w-full h-[178px] bg-neutral-100 rounded-none overflow-hidden relative group/frame border-2 border-black/10 shadow-sm">
+              {/* Store High Quality Image Representation without border style */}
+              <div className="w-full h-[178px] bg-neutral-100 rounded-none overflow-hidden relative group/frame shadow-xs">
                 <img 
                   src={activeStore.image} 
                   alt={activeStore.name} 

@@ -298,12 +298,9 @@ export default function ProductDetail({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch lg:items-start min-h-[500px]">
           
           {/* LEFT AREA: Realistic 3D Showcase (Responsive width 7 columns) */}
-          <div className="lg:col-span-8 flex flex-col justify-between border border-black/5 rounded-2xl p-4 md:p-8 relative overflow-hidden group/showcase transition-colors duration-500 bg-[#ffffff]">
+          <div className="lg:col-span-8 flex flex-col justify-between p-4 md:p-8 relative overflow-hidden group/showcase transition-colors duration-500 bg-[#ffffff]">
 
-            {/* Backplane Accent Pattern */}
-            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-[0.03] pointer-events-none select-none">
-              <span className="font-serif text-[180px] font-light leading-none tracking-tighter">結</span>
-            </div>
+            {/* Backplane Accent Pattern removed */}
 
 
 
@@ -370,7 +367,7 @@ export default function ProductDetail({
           </div>
 
           {/* RIGHT AREA: Product Detail & Control Column (Responsive width 4 columns wrapped in desktop sticky) */}
-          <div className="lg:col-span-4 lg:sticky lg:top-[88px] lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto no-scrollbar flex flex-col justify-between bg-white border border-black/5 rounded-2xl p-4 md:p-5 shadow-sm">
+          <div className="lg:col-span-4 lg:sticky lg:top-[88px] lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto no-scrollbar flex flex-col justify-between bg-transparent p-4 md:p-5">
             <div className="flex flex-col gap-4">
               
               {/* Product Heading & Price */}

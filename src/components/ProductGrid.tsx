@@ -196,7 +196,7 @@ export default function ProductGrid({
     );
 
     return (
-      <section className="relative py-12 md:py-16 px-6 md:px-12 bg-[#fafafa] border-t border-black/5 overflow-hidden font-sans">
+      <section id="products-section-title" className="relative py-12 md:py-16 px-6 md:px-12 bg-[#fafafa] border-t border-black/5 overflow-hidden font-sans">
         <div className="max-w-3xl mx-auto text-center mb-10 md:mb-14 px-4 bg-[#fafafa]">
           <h2 className="text-base md:text-[17px] font-extrabold tracking-[0.05em] text-neutral-900 mb-4 block uppercase break-keep">
             2026 GENTLE MONSTER HIGHLIGHTS
@@ -227,7 +227,7 @@ export default function ProductGrid({
                   window.scrollTo({ top: 0, behavior: 'instant' });
                 }
               }}
-              className="px-14 py-4 border border-[#111]/15 hover:border-brand-ink hover:bg-brand-ink hover:text-white text-[11px] font-extrabold tracking-[0.12em] text-[#111] transition-all duration-350 cursor-pointer shadow-xs rounded-xl active:scale-[0.98] uppercase font-sans"
+              className="px-14 py-4 border border-[#111]/15 hover:border-brand-ink hover:bg-brand-ink hover:text-white text-[11px] font-extrabold tracking-[0.12em] text-[#111] transition-all duration-350 cursor-pointer shadow-xs rounded-full active:scale-[0.98] uppercase font-sans"
             >
               컬렉션 전체보기 (View All Collections)
             </button>

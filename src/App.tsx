@@ -144,6 +144,8 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col font-sans bg-brand-bg text-brand-ink">
       <Header 
+        activeCollection={activeCollection}
+        activeView={view}
         onChangeCollection={handleSelectCollection} 
         onChangeView={handleNavigate}
         searchQuery={searchQuery}
@@ -181,16 +183,21 @@ export default function App() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              <CollectionChips 
-                activeCollection={activeCollection} 
-                onChangeCollection={handleSelectCollection} 
-                onSearchClear={() => setSearchQuery("")}
-                isSearching={!!searchQuery}
-                onOpenStory={() => handleNavigate('story')}
-              />
+              {activeCollection !== "홈" && (
+                <CollectionChips 
+                  activeCollection={activeCollection} 
+                  onChangeCollection={handleSelectCollection} 
+                  onSearchClear={() => setSearchQuery("")}
+                  isSearching={!!searchQuery}
+                  onOpenStory={() => handleNavigate('story')}
+                />
+              )}
               
               {activeCollection === "홈" && (
-                <Hero onOpenStory={() => handleNavigate('story')} />
+                <Hero 
+                  onOpenStory={() => handleNavigate('story')} 
+                  onViewCollections={() => handleSelectCollection("전체보기")}
+                />
               )}
 
               <ProductGrid 
