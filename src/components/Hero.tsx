@@ -15,7 +15,7 @@ export default function Hero({ onOpenStory, onViewCollections }: Props) {
 
   return (
     <section 
-      className="relative h-screen w-full overflow-hidden bg-[#18181b] flex items-end justify-center pb-20 md:pb-24 text-white font-sans"
+      className="relative h-screen w-full overflow-hidden bg-[#18181b] flex items-end justify-center pb-12 md:pb-16 text-white font-sans"
     >
       {/* 1. Base Image Fallback */}
       <div 
@@ -49,28 +49,20 @@ export default function Hero({ onOpenStory, onViewCollections }: Props) {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-center gap-7"
+          className="flex flex-col items-center gap-4"
         >
-          {/* Subtitle / Brand badge */}
-          <div className="flex items-center gap-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-            <span className="text-[10px] md:text-[11.5px] tracking-[0.3em] font-medium text-amber-200/90 uppercase font-sans">
-              GENTLE MONSTER × KOREAN ARTISANSHIP
-            </span>
-          </div>
-
           {/* Spliced Title */}
-          <h1 className="font-sans text-3xl md:text-5xl font-black tracking-[0.08em] leading-tight text-white uppercase break-keep">
+          <h1 className="font-serif text-xl md:text-[28px] font-medium tracking-[0.1em] leading-tight text-white uppercase break-keep">
             결의 시선 COLLECTION
           </h1>
 
           {/* Tiny luxurious caption line */}
-          <p className="text-[12.5px] md:text-[14px] text-zinc-300/90 font-medium tracking-wide max-w-[500px] break-keep leading-relaxed -mt-3">
+          <p className="text-[11.5px] md:text-[13px] text-zinc-300/90 font-medium tracking-wide max-w-[500px] break-keep leading-relaxed -mt-1.5">
             전통 공예 기법과 젠틀몬스터의 세련되고 조형적인 미학의 조화로운 결합
           </p>
 
           {/* Action Call buttons aligned precisely side-by-side */}
-          <div className="flex items-center justify-center gap-4 mt-2">
+          <div className="flex items-center justify-center gap-4 mt-0.5">
             <button
               onClick={() => {
                 if (onViewCollections) {
