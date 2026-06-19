@@ -15,7 +15,7 @@ export default function Hero({ onOpenStory, onViewCollections }: Props) {
 
   return (
     <section 
-      className="relative h-screen w-full overflow-hidden bg-[#18181b] flex items-end justify-center pb-12 md:pb-16 text-white font-sans"
+      className="relative h-screen w-full overflow-hidden bg-[#18181b] flex items-end justify-center pb-6 md:pb-8 text-white font-sans"
     >
       {/* 1. Base Image Fallback */}
       <div 
@@ -44,7 +44,7 @@ export default function Hero({ onOpenStory, onViewCollections }: Props) {
       <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-neutral-950/80 via-neutral-950/25 to-transparent z-0 pointer-events-none" />
 
       {/* 4. Minimalist Bottom-Centered Luxury Text overlay */}
-      <div className="relative z-10 w-full max-w-[800px] px-6 text-center select-none mb-4">
+      <div className="relative z-10 w-full max-w-[800px] px-6 text-center select-none mb-1">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

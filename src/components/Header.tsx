@@ -89,7 +89,11 @@ export default function Header({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 2 }}
                 transition={{ duration: 0.15, ease: "easeOut" }}
-                className="absolute top-[48px] -left-6 bg-brand-bg shadow-xl rounded-b-xl px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold text-brand-ink z-[1100]"
+                className={`absolute top-[48px] -left-6 px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold z-[1100] ${
+                  isCampaignHeroMode 
+                    ? "bg-transparent border-none shadow-none text-white space-y-0.5" 
+                    : "bg-brand-bg shadow-xl border-none rounded-b-xl text-brand-ink"
+                }`}
               >
                 <button 
                   onClick={() => handleSelectCollection("전체보기", "all")}
@@ -144,11 +148,17 @@ export default function Header({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 2 }}
                 transition={{ duration: 0.15, ease: "easeOut" }}
-                className="absolute top-[48px] -left-6 bg-brand-bg shadow-xl rounded-b-xl px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold text-brand-ink z-[1100]"
+                className={`absolute top-[48px] -left-6 px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold z-[1100] ${
+                  isCampaignHeroMode 
+                    ? "bg-transparent border-none shadow-none text-white space-y-0.5" 
+                    : "bg-brand-bg shadow-xl border-none rounded-b-xl text-brand-ink"
+                }`}
               >
                 <button 
                   onClick={() => onChangeView && onChangeView('story')}
-                  className="text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer text-amber-700 font-bold"
+                  className={`text-left hover:opacity-100 opacity-60 transition-all duration-200 tracking-tight whitespace-nowrap cursor-pointer font-bold ${
+                    isCampaignHeroMode ? "text-amber-400" : "text-amber-700"
+                  }`}
                 >
                   결의 시선 스토리
                 </button>
