@@ -154,7 +154,7 @@ export default function ProductGrid({
     });
 
     return (
-      <section className="relative py-12 md:py-16 px-6 md:px-12 bg-[#fafafa] border-t border-black/5 overflow-hidden font-sans">
+      <section className="relative py-12 md:py-16 px-6 md:px-12 bg-[#fafafa] overflow-hidden font-sans">
         <div className="max-w-3xl mx-auto text-center mb-10 md:mb-14 px-4 bg-[#fafafa]">
           <h2 className="text-base md:text-lg font-bold tracking-tight text-neutral-900 mb-3.5 uppercase break-keep">
             "{searchQuery}" 검색 결과
@@ -196,7 +196,7 @@ export default function ProductGrid({
     );
 
     return (
-      <section id="products-section-title" className="relative py-12 md:py-16 px-6 md:px-12 bg-[#fafafa] border-t border-black/5 overflow-hidden font-sans">
+      <section id="products-section-title" className="relative py-12 md:py-16 px-6 md:px-12 bg-[#fafafa] overflow-hidden font-sans">
         <div className="max-w-3xl mx-auto text-center mb-10 md:mb-14 px-4 bg-[#fafafa]">
           <h2 className="text-base md:text-[17px] font-extrabold tracking-[0.05em] text-neutral-900 mb-4 block uppercase break-keep">
             2026 GENTLE MONSTER HIGHLIGHTS
@@ -240,7 +240,7 @@ export default function ProductGrid({
   // 3. If viewing "전체보기" (Detailed Lookbook with sections for each of the 4 collections)
   if (activeCollection === "전체보기") {
     return (
-      <section className="relative py-12 md:py-16 px-6 md:px-12 bg-[#fafafa] border-t border-black/5 overflow-hidden font-sans">
+      <section className="relative py-12 md:py-16 px-6 md:px-12 bg-[#fafafa] overflow-hidden font-sans">
         {/* Page Main Premium Header */}
         <div className="max-w-3xl mx-auto text-center mb-14 md:mb-20 px-4 bg-[#fafafa]">
           <h2 className="text-base md:text-[18px] font-extrabold tracking-[0.06em] text-neutral-900 mb-4 block uppercase font-sans">
@@ -295,7 +295,7 @@ export default function ProductGrid({
   const currentInfo = COLLECTIONS_INFO.find(info => info.key === activeCollection);
 
   return (
-    <section className="relative py-12 md:py-16 px-6 md:px-12 bg-[#fafafa] border-t border-black/5 overflow-hidden font-sans">
+    <section className="relative py-12 md:py-16 px-6 md:px-12 bg-[#fafafa] overflow-hidden font-sans">
       <div className="max-w-3xl mx-auto text-center mb-10 md:mb-14 px-4 bg-[#fafafa]">
         <h2 className="text-base md:text-[17px] font-extrabold tracking-[0.05em] text-neutral-900 mb-4 block uppercase break-keep">
           {activeCollection} 하이라이트

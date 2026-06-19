@@ -15,7 +15,7 @@ const collections = [
 
 export default function CollectionChips({ activeCollection, onChangeCollection, onSearchClear, isSearching, onOpenStory }: Props) {
   return (
-    <section className="mt-[48px] h-[44px] flex items-center justify-between px-6 md:px-12 bg-white/80 backdrop-blur-md border-b border-black/5 relative z-30">
+    <section className="mt-[48px] h-[44px] flex items-center justify-between px-6 md:px-12 bg-[#fafafa] border-none relative z-30">
       <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
         {collections.map((item) => (
           <button
