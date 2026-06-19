@@ -56,7 +56,7 @@ export default function Header({
     <header className={`fixed top-0 left-0 w-full h-[48px] z-[1000] flex items-center justify-between px-4 sm:px-6 lg:px-12 transition-all duration-300 ${
       isCampaignHeroMode 
         ? "bg-transparent border-b border-transparent text-white" 
-        : "bg-brand-bg/60 backdrop-blur-xl border-none text-brand-ink"
+        : "bg-[#fafafa]/60 backdrop-blur-xl border-none text-brand-ink"
     }`}>
       {/* Mobile Hamburger Menu Toggle */}
       <button 
