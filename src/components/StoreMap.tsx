@@ -269,7 +269,7 @@ export default function StoreMap({ onBack }: { onBack: () => void }) {
     <div className="bg-[#f4f4f5] min-h-screen pt-[48px] text-brand-ink font-sans relative">
       
       {/* 1. Header Navigation and Interactive Mode Selection */}
-      <div className="bg-white border-b border-black/10 px-6 md:px-12 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm relative z-20">
+      <div className="bg-white px-6 md:px-12 py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm relative z-20">
         <div className="flex items-center gap-4">
           <button 
             onClick={onBack}

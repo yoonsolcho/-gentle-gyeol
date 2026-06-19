@@ -56,7 +56,7 @@ export default function Header({
     <header className={`fixed top-0 left-0 w-full h-[48px] z-[1000] flex items-center justify-between px-4 sm:px-6 lg:px-12 transition-all duration-300 ${
       isCampaignHeroMode 
         ? "bg-transparent border-b border-transparent text-white" 
-        : "bg-brand-bg/85 backdrop-blur-xl border-b border-black/5 text-brand-ink"
+        : "bg-brand-bg/60 backdrop-blur-xl border-none text-brand-ink"
     }`}>
       {/* Mobile Hamburger Menu Toggle */}
       <button 
@@ -89,7 +89,7 @@ export default function Header({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 2 }}
                 transition={{ duration: 0.15, ease: "easeOut" }}
-                className="absolute top-[48px] -left-6 bg-brand-bg border-x border-b border-black/5 shadow-xl rounded-b-xl px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold text-brand-ink z-[1100]"
+                className="absolute top-[48px] -left-6 bg-brand-bg shadow-xl rounded-b-xl px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold text-brand-ink z-[1100]"
               >
                 <button 
                   onClick={() => handleSelectCollection("전체보기", "all")}
@@ -144,7 +144,7 @@ export default function Header({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 2 }}
                 transition={{ duration: 0.15, ease: "easeOut" }}
-                className="absolute top-[48px] -left-6 bg-brand-bg border-x border-b border-black/5 shadow-xl rounded-b-xl px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold text-brand-ink z-[1100]"
+                className="absolute top-[48px] -left-6 bg-brand-bg shadow-xl rounded-b-xl px-6 py-4 flex flex-col gap-3 text-[13px] font-semibold text-brand-ink z-[1100]"
               >
                 <button 
                   onClick={() => onChangeView && onChangeView('story')}
@@ -242,7 +242,7 @@ export default function Header({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0 bg-white/95 backdrop-blur-md z-[1010] flex items-center justify-between px-6 md:px-12 border-b border-black/10"
+            className="absolute inset-0 bg-white/95 backdrop-blur-md z-[1010] flex items-center justify-between px-6 md:px-12"
           >
             <div className="flex items-center gap-4 w-full max-w-3xl mx-auto">
               <Search className="text-brand-ink/50" size={20} strokeWidth={2} />
@@ -289,7 +289,7 @@ export default function Header({
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute top-[48px] left-0 w-full bg-brand-bg/95 backdrop-blur-xl border-b border-black/10 shadow-2xl z-[990] overflow-y-auto max-h-[85vh] lg:hidden flex flex-col font-sans"
+            className="absolute top-[48px] left-0 w-full bg-brand-bg/95 backdrop-blur-xl shadow-2xl z-[990] overflow-y-auto max-h-[85vh] lg:hidden flex flex-col font-sans"
           >
             <div className="px-6 py-4 flex flex-col divide-y divide-black/5 text-left">
               {/* Category: Collections (all) */}

@@ -110,6 +110,45 @@ function ThumbnailButton({
   );
 }
 
+const getProductSpecificColor = (product: Product): ColorOption => {
+  switch (product.id) {
+    // 꽃 컬렉션
+    case "flower-1": // 매화 01
+      return { id: "silver-clear", name: "실버 / 클리어", classes: "bg-gradient-to-tr from-slate-200 to-slate-400 border border-slate-300/40", desc: "순백의 은을 활용한 초정밀 프레임" };
+    case "flower-3": // 연꽃 02
+      return { id: "platinum-clear", name: "플래티넘 / 크리스탈 클리어", classes: "bg-gradient-to-tr from-slate-100 to-slate-300 border border-slate-200/40", desc: "전통 은빛 주조 장인의 은빛 광채를 더한 백금 테" };
+    case "flower-4": // 국화 03
+      return { id: "gold-clear", name: "골드 / 크리스탈 클리어", classes: "bg-gradient-to-tr from-yellow-200 to-slate-50 border border-amber-300/20", desc: "황금 빛 테에 영롱하고 투명한 프레임" };
+
+    // 궁궐 컬렉션
+    case "palace-1": // 기와 01
+      return { id: "black-dark", name: "블랙 / 오닉스 섀도우", classes: "bg-neutral-900 border border-neutral-800", desc: "기와 먹색 고유의 은은하고 깊이 있는 검은 빛" };
+    case "palace-2": // 창호 02
+      return { id: "matte-black", name: "매트 블랙 / 오닉스", classes: "bg-neutral-800 border border-neutral-700", desc: "차분하고 절제된 무광 택 기와의 먹색 빛" };
+    case "palace-3": // 단청 03
+      return { id: "translucent-clear", name: "트랜스루센트 / 클리어", classes: "bg-slate-100/60 border border-slate-200/50 shadow-inner", desc: "오묘한 반투명 테에 비치는 우아한 실버 와이어" };
+
+    // 날개 컬렉션
+    case "wing-1": // 비상 01
+      return { id: "monochrome-gray", name: "모노크롬 / 그레이", classes: "bg-slate-300 border border-slate-400/30", desc: "날개의 미학을 은입사 라인으로 담아낸 다크 실버" };
+    case "wing-2": // 천공 02
+      return { id: "chrome-dark", name: "크롬 실버 / 다크 틴트", classes: "bg-gradient-to-b from-slate-400 to-zinc-700 border border-slate-500/40", desc: "빛나는 크롬 프레임과 깊은 사파이어 필터 렌즈" };
+    case "wing-3": // 바람 03
+      return { id: "titanium-clear", name: "내추럴 티타늄 / 클리어", classes: "bg-neutral-300 border border-neutral-400/30", desc: "고강도 티타늄 특유의 결을 살린 오리지널 매트 텍스처" };
+
+    // 문양 컬렉션
+    case "pattern-1": // 연화문 01
+      return { id: "classic-black", name: "클래식 블랙 / 오닉스", classes: "bg-black border border-neutral-900", desc: "한국 기와의 단단하고 짙은 검은 광택을 재현한 오닉스 블랙" };
+    case "pattern-2": // 당초문 02
+      return { id: "amber-gold", name: "엠버 골드 / 브라운 틴트", classes: "bg-gradient-to-tr from-amber-600 to-yellow-300 border border-amber-400/40", desc: "우아하고 따뜻한 금빛 은입사 문양 프레임" };
+    case "pattern-3": // 격자문 03
+      return { id: "dark-grid", name: "다크 그리드 / 섀도우", classes: "bg-neutral-900 border border-neutral-700/50", desc: "수묵 격자 문양이 미세하게 레이어링된 단청 스퀘어 테" };
+
+    default:
+      return { id: "default-color", name: "스페셜 틴트 / 클리어", classes: "bg-gradient-to-tr from-slate-200 to-slate-400 border border-slate-300", desc: "수공 장식과 조화롭게 녹아드는 프리미엄 프레임 컬러" };
+  }
+};
+
 export default function ProductDetail({ 
   product, 
   onBack, 
@@ -158,16 +197,9 @@ export default function ProductDetail({
   const [chatInput, setChatInput] = useState("");
 
   // Determine complementary colors
-  let colorFamily = "silver";
-  const dbColor = product.color.toLowerCase();
-  if (dbColor.includes("black")) colorFamily = "black";
-  else if (dbColor.includes("gold") || dbColor.includes("yellow") || dbColor.includes("amber")) colorFamily = "gold";
-  else if (dbColor.includes("rose") || dbColor.includes("pink")) colorFamily = "rose";
-  else if (dbColor.includes("navy") || dbColor.includes("blue") || dbColor.includes("indigo")) colorFamily = "navy";
-  else colorFamily = "silver";
-
-  const colorOptions = colorMaps[colorFamily] || defaultColors;
-  const currentColor = colorOptions[selectedColorIndex] || colorOptions[0];
+  const singleColor = getProductSpecificColor(product);
+  const colorOptions = [singleColor];
+  const currentColor = singleColor;
 
   // Auto-generate details based on products
   const features: Record<string, string[]> = {
@@ -408,7 +440,7 @@ export default function ProductDetail({
                   <span className="text-black font-semibold">{currentColor.name}</span>
                 </div>
                 
-                {/* 3 Color chips resembling the mock image style */}
+                {/* Color chips: only showing the singular correct design color */}
                 <div className="flex items-center gap-2.5">
                   {colorOptions.map((opt, index) => (
                     <button
@@ -429,11 +461,6 @@ export default function ProductDetail({
                       )}
                     </button>
                   ))}
-                  
-                  {/* Subtle helpful text on active selection */}
-                  <span className="text-[9.5px] text-neutral-400 font-medium ml-1">
-                    실버 / 클리어
-                  </span>
                 </div>
               </div>
 
